@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.GroupItemLayoutBinding
 
 class GroupListAdapter(
-    var groupList: Array<String>,
+    var groupList: ArrayList<String>,
 ) : RecyclerView.Adapter<GroupListAdapter.ViewHolder>() {
     private lateinit var listener: OnItemClickListener
 

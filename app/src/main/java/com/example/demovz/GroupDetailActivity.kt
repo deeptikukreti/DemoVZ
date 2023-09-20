@@ -1,19 +1,26 @@
 package com.example.demovz
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
 import com.example.demovz.adapter.DevicesListAdapter
 import com.example.demovz.databinding.ActivityGroupDetailBinding
+import java.text.DateFormat
+import java.util.Calendar
 
-class GroupDetailActivity : AppCompatActivity() , DevicesListAdapter.OnItemClickListener{
-    var binding : ActivityGroupDetailBinding?=null
-    var deviceList =ArrayList<String>()
-    lateinit var deviceAdapter: DevicesListAdapter
+class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickListener{
+    private var binding : ActivityGroupDetailBinding?=null
+    private var deviceList =ArrayList<String>()
+    private lateinit var deviceAdapter: DevicesListAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

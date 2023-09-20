@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateEventActivity">
+
+    <TextView
+        android:id="@+id/txt_group_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Movie Times"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/txt_trigger_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Trigger Type"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_group_name"/>
+    <RadioGroup
+        android:id="@+id/rg_trigger_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txt_trigger_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="20dp">
+
+        <RadioButton
+            android:id="@+id/rb_time_based"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time Based" />
+        <RadioButton
+            android:id="@+id/rb_event_based"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Event Based"
+            android:alpha="0.5"
+            android:clickable="false"/>
+    </RadioGroup>
+
+    <androidx.constraintlayout.widget.Group
+        android:visibility="gone"
+        android:id="@+id/grpSelectDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="select_date_time,tvDateTime,cb_recurring"/>
+    <TextView
+        android:id="@+id/select_date_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Date &amp; Time"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rg_trigger_type"/>
+    <TextView
+        android:id="@+id/tvDateTime"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Select Date &amp; Time"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingHorizontal="10dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:drawableEnd="@drawable/baseline_calendar"
+        android:background="@drawable/rectangle"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/select_date_time"/>
+
+    <CheckBox
+        android:id="@+id/cb_recurring"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Repeating Event"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="20dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDateTime"/>
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/grpAddDevice"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="txt_add_devices,rv_grp"/>
+
+    <TextView
+        android:id="@+id/txt_add_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Devices"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:drawableStart="@drawable/baseline_add_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cb_recurring"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_grp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="40dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/btn_save_event"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_add_devices"
+        tools:itemCount="3"
+        tools:listitem="@layout/device_item_layout" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btn_save_event"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:text="SAVE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_grp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
