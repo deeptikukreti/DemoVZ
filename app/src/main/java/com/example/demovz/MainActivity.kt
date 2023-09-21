@@ -48,6 +48,6 @@ class MainActivity : AppCompatActivity(), GroupListAdapter.OnItemClickListener {
         builder.show()
     }
     override fun onClicked(groupName:String) {
-//        startActivity(Intent(this,GroupDetailActivity::class.java).putExtra("GROUP_NAME",groupName))
+//        startActivity(Intent(this,zGroupDetailActivity::class.java).putExtra("GROUP_NAME",groupName))
     }
 }
