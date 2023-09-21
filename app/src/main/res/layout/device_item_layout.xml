@@ -16,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".GroupDetailActivity">
+        tools:context=".ui.activity.GroupDetailActivity">
 
         <TextView
             android:id="@+id/txt_device_name"
