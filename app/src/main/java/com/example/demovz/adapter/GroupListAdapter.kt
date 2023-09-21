@@ -1,12 +1,14 @@
 package com.example.demovz.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.GroupItemLayoutBinding
+import com.example.demovz.db.Event
 
 class GroupListAdapter(
-    private var groupList: ArrayList<String>,
+    private var groupList: ArrayList<Event>,
 ) : RecyclerView.Adapter<GroupListAdapter.ViewHolder>() {
     private lateinit var listener: OnItemClickListener
 
@@ -21,14 +23,18 @@ class GroupListAdapter(
         return ViewHolder(binding)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
-            with(groupList[position]) {
+            with(groupList[position].eventName) {
                 binding.groupName.text = this
                 binding.words.text  = if(this.isNotBlank()) { first().toString() } else ""
                 binding.clGroup.setOnClickListener {
                     listener.onClicked(this)
                 }
+            }
+            with(groupList[position]) {
+                binding.groupDetails.text = "${this.dateTime} Recurring: ${this.isRecurring}"
             }
         }
     }
@@ -40,6 +46,12 @@ class GroupListAdapter(
 
     fun setOnClickListener(listener1: OnItemClickListener) {
         listener = listener1
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(eventsList: List<Event>) {
+        this.groupList = eventsList as ArrayList<Event>
+        notifyDataSetChanged()
     }
 
     interface OnItemClickListener {

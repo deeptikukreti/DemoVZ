@@ -11,17 +11,24 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.example.demovz.CreateEventActivity
 import com.example.demovz.R
 import com.example.demovz.adapter.GroupListAdapter
 import com.example.demovz.databinding.FragmentGroupBinding
+import com.example.demovz.db.Event
+import com.example.demovz.db.RoomDb
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener{
+class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
 
     private lateinit var viewModel: GroupViewModel
     private var _binding: FragmentGroupBinding? = null
     private val binding get() = _binding!!
-    private var groupList = ArrayList<String>()
+    private var groupList = ArrayList<Event>()
     private lateinit var grpAdapter: GroupListAdapter
 
     override fun onCreateView(
@@ -32,29 +39,51 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener{
         _binding = FragmentGroupBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        grpAdapter = GroupListAdapter(groupList).apply{ setOnClickListener(this@GroupFragment) }
-        binding.rvGrp.adapter =grpAdapter
+        grpAdapter = GroupListAdapter(groupList).apply { setOnClickListener(this@GroupFragment) }
+        binding.rvGrp.adapter = grpAdapter
         binding.addBtn.setOnClickListener {
-            createAlertDialog()
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    CreateEventActivity::class.java
+                )
+            )
         }
+
+        CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
 
         return root
     }
 
+    private suspend fun getGroupDataList() {
+        lifecycleScope.launch {
+            RoomDb.getInstance(requireContext()).eventDao().getAllEvents().collect { eventsList ->
+                if (eventsList.isNotEmpty()) {
+                    grpAdapter.submitList(eventsList)
+                }
+            }
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    private fun createAlertDialog(){
-        val builder = AlertDialog.Builder(requireActivity(),R.style.CustomAlertDialog)
+    private fun createAlertDialog() {
+        val builder = AlertDialog.Builder(requireActivity(), R.style.CustomAlertDialog)
             .create()
-        val view = layoutInflater.inflate(R.layout.create_event_layout,null)
-        val  eventName = view.findViewById<EditText>(R.id.edt_event_name)
-        val  next = view.findViewById<Button>(R.id.btn_next)
-        val  cancel = view.findViewById<Button>(R.id.btn_cancel)
+        val view = layoutInflater.inflate(R.layout.create_event_layout, null)
+        val eventName = view.findViewById<EditText>(R.id.edt_event_name)
+        val next = view.findViewById<Button>(R.id.btn_next)
+        val cancel = view.findViewById<Button>(R.id.btn_cancel)
         builder.setView(view)
         next.setOnClickListener {
-            groupList.add(eventName.text.toString())
+            //groupList.add(eventName.text.toString())
             grpAdapter.notifyDataSetChanged()
             builder.dismiss()
-            startActivity(Intent(requireActivity(), CreateEventActivity::class.java).putExtra("EVENT_NAME",eventName.text.toString()))
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    CreateEventActivity::class.java
+                ).putExtra("EVENT_NAME", eventName.text.toString())
+            )
         }
         cancel.setOnClickListener {
             builder.dismiss()
@@ -62,7 +91,8 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener{
         builder.setCanceledOnTouchOutside(false)
         builder.show()
     }
-    override fun onClicked(name:String) {
+
+    override fun onClicked(name: String) {
 //        startActivity(Intent(this,GroupDetailActivity::class.java).putExtra("GROUP_NAME",groupName))
     }
 

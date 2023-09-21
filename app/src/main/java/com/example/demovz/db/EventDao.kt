@@ -1,11 +1,11 @@
 package com.example.demovz.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -24,5 +24,5 @@ interface EventDao  {
     fun deleteAllEvents()
 
     @Query("SELECT * FROM event_table")
-    fun getAllEvents():List<Event>
+    fun getAllEvents(): Flow<List<Event>>
 }

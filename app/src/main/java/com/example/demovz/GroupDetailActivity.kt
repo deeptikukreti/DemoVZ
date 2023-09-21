@@ -38,7 +38,7 @@ class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
     }
 
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     fun createAlertDialog(){
         val builder = AlertDialog.Builder(this,R.style.CustomAlertDialog)
             .create()
@@ -67,6 +67,7 @@ class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
         TODO("Not yet implemented")
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onDeviceRemoved(position: Int) {
         deviceList.removeAt(position)
         deviceAdapter.notifyDataSetChanged()

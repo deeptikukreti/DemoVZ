@@ -9,7 +9,7 @@ import com.example.demovz.util.ArrayListConverter
 @Entity(tableName = "event_table")
 data class Event(
     @PrimaryKey(autoGenerate = true)
-    var id : Int?=null,
+    var id: Int? = null,
     @ColumnInfo(name = "event_name")
     val eventName: String,
     @ColumnInfo(name = "trigger_type")
@@ -18,8 +18,8 @@ data class Event(
     val dateTime: String,
     @ColumnInfo(name = "is_recurring")
     val isRecurring: Boolean,
-     @ColumnInfo(name = "device_list")
-     val deviceList: String
+    @ColumnInfo(name = "device_list")
+    val deviceList: String
 
 )
 
