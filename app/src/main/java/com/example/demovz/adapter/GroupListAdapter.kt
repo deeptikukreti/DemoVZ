@@ -15,7 +15,6 @@ class GroupListAdapter(
     inner class ViewHolder(val binding: GroupItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             GroupItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
