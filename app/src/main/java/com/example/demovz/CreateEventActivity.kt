@@ -3,28 +3,26 @@ package com.example.demovz
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.demovz.adapter.DevicesListAdapter
 import com.example.demovz.databinding.ActivityCreateEventBinding
-import java.text.DateFormat
+import com.example.demovz.db.Device
+import com.example.demovz.db.Event
+import com.example.demovz.db.RoomDb
+import com.example.demovz.util.ArrayListConverter
 import java.util.Calendar
 
 class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickListener,
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     var binding :ActivityCreateEventBinding?=null
-    var deviceList =ArrayList<String>()
+    var deviceList =ArrayList<Device>()
     lateinit var deviceAdapter: DevicesListAdapter
 
     var day = 0
@@ -37,12 +35,15 @@ class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
     var myYear: Int = 0
     var myHour: Int = 0
     var myMinute: Int = 0
+
+    var eventName: String=""
+    var triggerType: Int=0 //1=time base ,2=event based
+    var dateTime: String=""
+    var isRecurring:Boolean=false
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          binding=ActivityCreateEventBinding.inflate(layoutInflater)
          setContentView(binding?.root)
-         val name = intent.extras?.getString("EVENT_NAME")
-         binding?.txtGroupName?.text=name
          viewInitialization()
     }
 
@@ -50,10 +51,15 @@ class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
         deviceAdapter = DevicesListAdapter(deviceList).apply{ setOnClickListener(this@CreateEventActivity) }
         binding?.rvGrp?.adapter=deviceAdapter
         binding?.apply {
+
           rgTriggerType.setOnCheckedChangeListener { radioGroup, i ->
               when(i){
-                  R.id.rb_time_based->{ grpSelectDateTime.visibility=View.VISIBLE}
-                  R.id.rb_event_based->{}
+                  R.id.rb_time_based->{
+                      triggerType=1
+                      grpSelectDateTime.visibility=View.VISIBLE}
+                  R.id.rb_event_based->{
+                      triggerType=2
+                  }
               }
           }
 
@@ -68,13 +74,32 @@ class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
               // grpAddDevice.visibility=View.VISIBLE
            }
 
+            cbRecurring.setOnCheckedChangeListener { buttonView, isChecked ->
+                isRecurring=isChecked
+            }
             txtAddDevices.setOnClickListener {
                 createAlertDialog()
+            }
+
+            btnSaveEvent.setOnClickListener {
+                if(edtEventName.text.toString().isEmpty())
+                {
+                    Toast.makeText(this@CreateEventActivity,"Please enter event name",Toast.LENGTH_LONG).show()
+                }
+                else{
+                    eventName=edtEventName.text.toString()
+                    saveEventDetails()
+                }
             }
         }
     }
 
-    fun createAlertDialog(){
+    private fun saveEventDetails(){
+        val eventObj = Event(eventName = eventName,triggerType=triggerType,dateTime=dateTime,isRecurring=isRecurring,deviceList=ArrayListConverter().fromStringArrayList(deviceList))
+        RoomDb.getInstance(applicationContext).eventDao().insert(eventObj)
+        onBackPressed()
+    }
+    private fun createAlertDialog(){
         val builder = AlertDialog.Builder(this,R.style.CustomAlertDialog)
             .create()
         val view = layoutInflater.inflate(R.layout.add_device_layout,null)
@@ -83,7 +108,7 @@ class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
         val  cancel = view.findViewById<Button>(R.id.btn_cancel)
         builder.setView(view)
         save.setOnClickListener {
-            deviceList.add(device_name.text.toString())
+            deviceList.add(Device(device_name.text.toString(),"Off"))
             deviceAdapter.notifyDataSetChanged()
             if(deviceList.size>0)
                 binding?.btnSaveEvent?.visibility=View.VISIBLE
@@ -98,6 +123,10 @@ class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
 
     override fun onClicked(s: String) {
         TODO("Not yet implemented")
+    }
+
+    override fun onToggleClicked(s: String, action: String,position: Int) {
+        deviceList[position].action=action
     }
 
     override fun onDeviceRemoved(position: Int) {
@@ -123,6 +152,7 @@ class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
         myHour = hourOfDay
         myMinute = minute
         binding?.tvDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+        dateTime="$myDay-$myMonth-$myYear, $myHour:$myMinute"
         binding?.grpAddDevice?.visibility=View.VISIBLE
     }
 
