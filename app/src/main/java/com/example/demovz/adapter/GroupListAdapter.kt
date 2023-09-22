@@ -33,17 +33,15 @@ class GroupListAdapter(
                 binding.clGroup.setOnClickListener {
                     listener.onClicked(this)
                 }
-            }
-            with(groupList[position]) {
-                binding.groupDetails.text = "${this.dateTime} \n Recurring: ${this.isRecurring}"
-                binding.editImg.setOnClickListener {
-                    this.id?.let { it1 -> listener.onItemEdited(position, it1) }
-                }
-                binding.cancelImg.setOnClickListener {
-                    groupList.remove(this)
-                    notifyDataSetChanged()
-                     listener.onItemRemoved(this)
-                }
+
+//                binding.editImg.setOnClickListener {
+//                    this.id?.let { it1 -> listener.onItemEdited(position, it1) }
+//                }
+//                binding.cancelImg.setOnClickListener {
+//                    groupList.remove(this)
+//                    notifyDataSetChanged()
+//                     listener.onItemRemoved(this)
+//                }
             }
 
         }

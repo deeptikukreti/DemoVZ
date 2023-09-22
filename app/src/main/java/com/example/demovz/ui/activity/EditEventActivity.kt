@@ -73,7 +73,7 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
                 btnSaveEvent.visibility=View.VISIBLE
                 deviceList = ArrayListConverter().toStringArrayList(data.deviceList)
                 deviceAdapter =
-                    DevicesListAdapter(deviceList).apply { setOnClickListener(this@EditEventActivity) }
+                    DevicesListAdapter(deviceList,false).apply { setOnClickListener(this@EditEventActivity) }
                 binding?.rvGrp?.adapter = deviceAdapter
             }
         }

@@ -49,7 +49,7 @@ class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
     }
 
     private fun viewInitialization() {
-        deviceAdapter = DevicesListAdapter(deviceList).apply{ setOnClickListener(this@CreateEventActivity) }
+        deviceAdapter = DevicesListAdapter(deviceList,false).apply{ setOnClickListener(this@CreateEventActivity) }
         binding?.rvGrp?.adapter=deviceAdapter
         binding?.apply {
 

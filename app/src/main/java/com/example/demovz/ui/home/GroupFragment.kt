@@ -14,6 +14,8 @@ import com.example.demovz.databinding.FragmentGroupBinding
 import com.example.demovz.db.Event
 import com.example.demovz.db.RoomDb
 import com.example.demovz.ui.activity.EditEventActivity
+import com.example.demovz.ui.activity.EventDetailActivity
+import com.example.demovz.ui.activity.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,8 +63,8 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
     }
 
 
-    override fun onClicked(event: Event) {
-        //startActivity(Intent(requireActivity(), GroupDetailActivity::class.java).putExtra("GROUP_NAME",event.eventName))
+    override fun onClicked(item: Event) {
+        startActivity(Intent(activity,EventDetailActivity::class.java).putExtra("ID",item.id))
     }
 
     override fun onItemRemoved(item:Event) {
