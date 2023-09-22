@@ -1,6 +1,7 @@
 package com.example.demovz.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.DeviceItemLayoutBinding
@@ -8,6 +9,7 @@ import com.example.demovz.db.Device
 
 class DevicesListAdapter(
     var devicesList: ArrayList<Device>,
+    var isEventDetail:Boolean
 ) : RecyclerView.Adapter<DevicesListAdapter.ViewHolder>() {
 
 
@@ -34,6 +36,12 @@ class DevicesListAdapter(
                         listener.onClicked(this.deviceName)
                     }
 
+                    if(isEventDetail)
+                    {
+                        cancelImg.visibility= View.GONE
+                        toggleBtn.isClickable=false
+                        toggleBtn.isEnabled=false
+                    }
                     cancelImg.setOnClickListener {
                         listener.onDeviceRemoved(position)
                     }

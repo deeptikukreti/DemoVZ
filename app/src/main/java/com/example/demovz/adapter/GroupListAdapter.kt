@@ -28,20 +28,22 @@ class GroupListAdapter(
             with(groupList[position].eventName) {
                 binding.groupName.text = this
                 binding.words.text  = if(this.isNotBlank()) { first().toString() } else ""
-                binding.clGroup.setOnClickListener {
-                    listener.onClicked(this)
-                }
             }
             with(groupList[position]) {
                 binding.groupDetails.text = "${this.dateTime} \n Recurring: ${this.isRecurring}"
-                binding.editImg.setOnClickListener {
-                    this.id?.let { it1 -> listener.onItemEdited(position, it1) }
+
+                binding.clGroup.setOnClickListener {
+                    listener.onClicked(this)
                 }
-                binding.cancelImg.setOnClickListener {
-                    groupList.remove(this)
-                    notifyDataSetChanged()
-                     listener.onItemRemoved(this)
-                }
+
+//                binding.editImg.setOnClickListener {
+//                    this.id?.let { it1 -> listener.onItemEdited(position, it1) }
+//                }
+//                binding.cancelImg.setOnClickListener {
+//                    groupList.remove(this)
+//                    notifyDataSetChanged()
+//                     listener.onItemRemoved(this)
+//                }
             }
 
         }
@@ -63,7 +65,7 @@ class GroupListAdapter(
     }
 
     interface OnItemClickListener {
-        fun onClicked(name: String)
+        fun onClicked(name: Event)
         fun onItemRemoved(item:Event)
 
         fun onItemEdited(position: Int, id: Int)
