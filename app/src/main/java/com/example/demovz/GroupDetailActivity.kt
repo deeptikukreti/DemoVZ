@@ -13,12 +13,13 @@ import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
 import com.example.demovz.adapter.DevicesListAdapter
 import com.example.demovz.databinding.ActivityGroupDetailBinding
+import com.example.demovz.db.Device
 import java.text.DateFormat
 import java.util.Calendar
 
 class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickListener{
     private var binding : ActivityGroupDetailBinding?=null
-    private var deviceList =ArrayList<String>()
+    private var deviceList =ArrayList<Device>()
     private lateinit var deviceAdapter: DevicesListAdapter
 
 
@@ -28,8 +29,8 @@ class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
         setContentView(binding?.root)
         val name = intent.extras?.getString("GROUP_NAME")
         binding?.txtGroupName?.text=name
-        deviceList.addAll(arrayOf("TV","Led Lights"))
-        //deviceAdapter = DevicesListAdapter(deviceList).apply{ setOnClickListener(this@GroupDetailActivity) }
+        //deviceList.addAll(arrayOf("TV","Led Lights"))
+        deviceAdapter = DevicesListAdapter(deviceList).apply{ setOnClickListener(this@GroupDetailActivity) }
         binding?.rvGrp?.adapter=deviceAdapter
 
         binding?.addBtn?.setOnClickListener {
@@ -48,7 +49,7 @@ class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
         val  cancel = view.findViewById<Button>(R.id.btn_cancel)
         builder.setView(view)
         save.setOnClickListener {
-            deviceList.add(device_name.text.toString())
+            //deviceList.add(device_name.text.toString())
             deviceAdapter.notifyDataSetChanged()
             builder.dismiss()
         }

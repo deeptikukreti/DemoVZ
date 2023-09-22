@@ -21,7 +21,6 @@ import com.example.demovz.db.RoomDb
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
 
@@ -92,8 +91,8 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
         builder.show()
     }
 
-    override fun onClicked(name: String) {
-//        startActivity(Intent(this,GroupDetailActivity::class.java).putExtra("GROUP_NAME",groupName))
+    override fun onClicked(event: Event) {
+        //startActivity(Intent(requireActivity(), GroupDetailActivity::class.java).putExtra("GROUP_NAME",event.eventName))
     }
 
     override fun onDestroyView() {

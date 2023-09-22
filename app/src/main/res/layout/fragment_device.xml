@@ -7,13 +7,32 @@
     tools:context=".ui.device.DeviceFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/txt_grp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="20dp"
         android:text="@string/title_devices"
-        android:textSize="25sp"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_grp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="40dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/txt_grp"
+        tools:itemCount="3"
+        tools:listitem="@layout/device_item_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
