@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,155 +15,159 @@
             android:id="@+id/txt_create_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
             android:text="Edit Event/Scene"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txt_evnt_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:text="Event/Scene Name"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:layout_marginHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_create_event"/>
+            app:layout_constraintTop_toBottomOf="@id/txt_create_event" />
 
         <EditText
             android:id="@+id/edt_event_name"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:hint="Add Action"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingHorizontal="10dp"
-            android:singleLine="true"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/rectangle"
+            android:hint="Add Action"
+            android:paddingHorizontal="10dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_evnt_name"/>
+            app:layout_constraintTop_toBottomOf="@id/txt_evnt_name" />
 
 
         <TextView
             android:id="@+id/txt_trigger_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="20dp"
             android:text="Choose Trigger Type"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edt_event_name"/>
+            app:layout_constraintTop_toBottomOf="@id/edt_event_name" />
+
         <RadioGroup
             android:id="@+id/rg_trigger_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/txt_trigger_type"
+            android:layout_marginStart="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="20dp">
+            app:layout_constraintTop_toBottomOf="@id/txt_trigger_type">
 
             <RadioButton
                 android:id="@+id/rb_time_based"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time Based" />
+                android:text="@string/time_based" />
+
             <RadioButton
                 android:id="@+id/rb_event_based"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:text="Event Based"
                 android:alpha="0.5"
-                android:clickable="false"/>
+                android:clickable="false"
+                android:text="@string/event_based" />
         </RadioGroup>
 
         <androidx.constraintlayout.widget.Group
-            android:visibility="gone"
             android:id="@+id/grpSelectDateTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="select_date_time,tvDateTime,cb_recurring"/>
+            android:visibility="gone"
+            app:constraint_referenced_ids="select_date_time,tvDateTime,cb_recurring" />
+
         <TextView
             android:id="@+id/select_date_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Date &amp; Time"
+            android:layout_margin="20dp"
+            android:text="@string/select_date_time"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_margin="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rg_trigger_type"/>
+            app:layout_constraintTop_toBottomOf="@id/rg_trigger_type" />
+
         <TextView
             android:id="@+id/tvDateTime"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rectangle"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp"
             android:text="Select Date &amp; Time"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:paddingHorizontal="10dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:drawableEnd="@drawable/baseline_calendar"
-            android:background="@drawable/rectangle"
-            android:layout_marginHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/select_date_time"/>
+            app:layout_constraintTop_toBottomOf="@id/select_date_time"
+            app:drawableEndCompat="@drawable/baseline_calendar" />
 
         <CheckBox
             android:id="@+id/cb_recurring"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Repeating Event"
+            android:layout_marginHorizontal="20dp"
+            android:padding="20dp"
+            android:text="@string/repeating_event"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="20dp"
-            android:layout_marginHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDateTime"/>
+            app:layout_constraintTop_toBottomOf="@id/tvDateTime" />
 
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/grpAddDevice"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="txt_add_devices,rv_grp"/>
+            android:visibility="gone"
+            app:constraint_referenced_ids="txt_add_devices,rv_grp" />
 
         <TextView
             android:id="@+id/txt_add_devices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Devices"
-            android:textSize="18sp"
-            android:textStyle="bold"
             android:paddingHorizontal="20dp"
             android:paddingTop="20dp"
             android:paddingBottom="10dp"
-            android:drawableStart="@drawable/baseline_add_24"
+            android:text="@string/add_devices"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/baseline_add_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cb_recurring"/>
+            app:layout_constraintTop_toBottomOf="@id/cb_recurring" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_grp"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="40dp"
             android:nestedScrollingEnabled="true"
@@ -175,15 +180,15 @@
             tools:listitem="@layout/device_item_layout" />
 
         <Button
-            android:visibility="gone"
             android:id="@+id/btn_save_event"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="20dp"
-            android:text="SAVE"
+            android:text="@string/save"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_grp"/>
+            app:layout_constraintTop_toBottomOf="@id/rv_grp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

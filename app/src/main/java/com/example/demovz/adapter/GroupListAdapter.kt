@@ -65,7 +65,7 @@ class GroupListAdapter(
     }
 
     interface OnItemClickListener {
-        fun onClicked(name: String)
+        fun onClicked(event: Event)
         fun onItemRemoved(item:Event)
 
         fun onItemEdited(position: Int, id: Int)
