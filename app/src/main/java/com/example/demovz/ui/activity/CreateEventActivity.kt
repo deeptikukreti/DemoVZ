@@ -1,5 +1,6 @@
 package com.example.demovz.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -101,16 +102,17 @@ class CreateEventActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
         onBackPressed();
         finish()
     }
+    @SuppressLint("NotifyDataSetChanged")
     private fun createAlertDialog(){
         val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .create()
         val view = layoutInflater.inflate(R.layout.add_device_layout,null)
-        val  device_name = view.findViewById<EditText>(R.id.edt_device)
+        val  deviceName = view.findViewById<EditText>(R.id.edt_device)
         val  save = view.findViewById<Button>(R.id.btn_save)
         val  cancel = view.findViewById<Button>(R.id.btn_cancel)
         builder.setView(view)
         save.setOnClickListener {
-            deviceList.add(Device(device_name.text.toString(),"Off"))
+            deviceList.add(Device(deviceName.text.toString(),"Off"))
             deviceAdapter.notifyDataSetChanged()
             if(deviceList.size>0)
                 binding?.btnSaveEvent?.visibility=View.VISIBLE

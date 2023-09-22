@@ -27,7 +27,7 @@ class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
         val name = intent.extras?.getString("GROUP_NAME")
         binding?.txtGroupName?.text=name
         //deviceList.addAll(arrayOf("TV","Led Lights"))
-        deviceAdapter = DevicesListAdapter(deviceList).apply{ setOnClickListener(this@GroupDetailActivity) }
+        deviceAdapter = DevicesListAdapter(deviceList, false).apply{ setOnClickListener(this@GroupDetailActivity) }
         binding?.rvGrp?.adapter=deviceAdapter
 
         binding?.addBtn?.setOnClickListener {

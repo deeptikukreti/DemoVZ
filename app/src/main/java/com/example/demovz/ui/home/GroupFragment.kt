@@ -15,7 +15,6 @@ import com.example.demovz.db.Event
 import com.example.demovz.db.RoomDb
 import com.example.demovz.ui.activity.EditEventActivity
 import com.example.demovz.ui.activity.EventDetailActivity
-import com.example.demovz.ui.activity.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,11 +62,11 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
     }
 
 
-    override fun onClicked(item: Event) {
-        startActivity(Intent(activity,EventDetailActivity::class.java).putExtra("ID",item.id))
+    override fun onClicked(event: Event) {
+        startActivity(Intent(activity, EventDetailActivity::class.java).putExtra("ID", event.id))
     }
 
-    override fun onItemRemoved(item:Event) {
+    override fun onItemRemoved(item: Event) {
         activity?.let {
             RoomDb.getInstance(
                 it.applicationContext
@@ -77,7 +76,7 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
     }
 
     override fun onItemEdited(position: Int, id: Int) {
-        startActivity(Intent(activity,EditEventActivity::class.java).putExtra("ID",id))
+        startActivity(Intent(activity, EditEventActivity::class.java).putExtra("ID", id))
     }
 
     override fun onDestroyView() {

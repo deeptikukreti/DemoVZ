@@ -8,8 +8,8 @@ import com.example.demovz.databinding.DeviceItemLayoutBinding
 import com.example.demovz.db.Device
 
 class DevicesListAdapter(
-    var devicesList: ArrayList<Device>,
-    var isEventDetail:Boolean
+    private var devicesList: ArrayList<Device>,
+    private var isEventDetail: Boolean
 ) : RecyclerView.Adapter<DevicesListAdapter.ViewHolder>() {
 
 
@@ -26,7 +26,7 @@ class DevicesListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
-            binding?.apply {
+            binding.apply {
                 with(devicesList[position]) {
 
                     txtDeviceName.text = this.deviceName
@@ -36,18 +36,21 @@ class DevicesListAdapter(
                         listener.onClicked(this.deviceName)
                     }
 
-                    if(isEventDetail)
-                    {
-                        cancelImg.visibility= View.GONE
-                        toggleBtn.isClickable=false
-                        toggleBtn.isEnabled=false
+                    if (isEventDetail) {
+                        cancelImg.visibility = View.GONE
+                        toggleBtn.isClickable = false
+                        toggleBtn.isEnabled = false
                     }
                     cancelImg.setOnClickListener {
                         listener.onDeviceRemoved(position)
                     }
 
                     toggleBtn.setOnClickListener {
-                        listener.onToggleClicked(this.deviceName, toggleBtn.text.toString(),position)
+                        listener.onToggleClicked(
+                            this.deviceName,
+                            toggleBtn.text.toString(),
+                            position
+                        )
                     }
                 }
             }
@@ -66,7 +69,7 @@ class DevicesListAdapter(
 
     interface OnItemClickListener {
         fun onClicked(s: String)
-        fun onToggleClicked(s: String, action: String,position: Int)
+        fun onToggleClicked(s: String, action: String, position: Int)
         fun onDeviceRemoved(position: Int)
     }
 

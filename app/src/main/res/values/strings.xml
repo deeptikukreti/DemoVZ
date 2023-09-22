@@ -49,7 +49,7 @@
     <string name="title_profile">Profile</string>
     <string name="title_home">Home</string>
     <string name="title_devices">Devices</string>
-    <string name="events">Events</string>
+    <string name="events">My Events</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="add_devices">Add Devices</string>
     <string name="save">Save</string>
@@ -57,4 +57,11 @@
     <string name="time_based">Time Based</string>
     <string name="event_based">Event Based</string>
     <string name="select_date_time"><![CDATA[Select Date & Time]]></string>
+    <string name="welcome_back_xyz">Welcome Back Mr XYZ</string>
+    <string name="router_name">Router Name:</string>
+    <string name="router_details">Router Details</string>
+    <string name="conn_devices">Conn Devices:</string>
+    <string name="fios_routers">Fios Routers</string>
+    <string name="on">ON</string>
+    <string name="status">Status:</string>
 </resources>

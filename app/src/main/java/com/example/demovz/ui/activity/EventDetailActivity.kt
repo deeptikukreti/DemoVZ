@@ -12,10 +12,10 @@ import com.example.demovz.db.Event
 import com.example.demovz.db.RoomDb
 import com.example.demovz.util.ArrayListConverter
 
-class EventDetailActivity : AppCompatActivity() {
+class EventDetailActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickListener{
 
     var binding: ActivityEventDetailBinding? = null
-    var deviceList =ArrayList<Device>()
+    var deviceList = ArrayList<Device>()
     lateinit var deviceAdapter: DevicesListAdapter
 
     var eventName: String = ""
@@ -29,21 +29,26 @@ class EventDetailActivity : AppCompatActivity() {
         binding = ActivityEventDetailBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         id = intent?.extras?.getInt("ID")
-        setData()
+
         binding?.apply {
 
-            txtEvntName.setOnClickListener {
+            txtCreateEvent.setOnClickListener {
                 onBackPressed()
             }
 
             editImg.setOnClickListener {
-                startActivity(Intent(this@EventDetailActivity,EditEventActivity::class.java).putExtra("ID",id))
+                startActivity(
+                    Intent(
+                        this@EventDetailActivity,
+                        EditEventActivity::class.java
+                    ).putExtra("ID", id)
+                )
             }
 
             cancelImg.setOnClickListener {
-                    RoomDb.getInstance(
-                       applicationContext
-                    ).eventDao().delete(event = data)
+                RoomDb.getInstance(
+                    applicationContext
+                ).eventDao().delete(event = data)
                 onBackPressed()
                 finish()
             }
@@ -69,10 +74,26 @@ class EventDetailActivity : AppCompatActivity() {
                 }
 
                 deviceList = ArrayListConverter().toStringArrayList(data.deviceList)
-                deviceAdapter =
-                    DevicesListAdapter(deviceList,true)
+                deviceAdapter = DevicesListAdapter(deviceList, true).apply{ setOnClickListener(this@EventDetailActivity) }
                 binding?.rvGrp?.adapter = deviceAdapter
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setData()
+    }
+
+    override fun onClicked(s: String) {
+        //"Not yet implemented"
+    }
+
+    override fun onToggleClicked(s: String, action: String, position: Int) {
+        //"Not yet implemented"
+    }
+
+    override fun onDeviceRemoved(position: Int) {
+        //"Not yet implemented"
     }
 }

@@ -35,7 +35,7 @@ class DeviceFragment : Fragment(), DevicesListAdapter.OnItemClickListener {
         deviceList.add(device3)
 
         deviceAdapter =
-            DevicesListAdapter(deviceList).apply { setOnClickListener(this@DeviceFragment) }
+            DevicesListAdapter(deviceList, false).apply { setOnClickListener(this@DeviceFragment) }
         binding.rvGrp.adapter = deviceAdapter
 
         return root

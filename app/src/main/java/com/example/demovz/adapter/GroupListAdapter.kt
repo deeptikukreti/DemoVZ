@@ -25,23 +25,18 @@ class GroupListAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
-            with(groupList[position]) {
-                binding.groupName.text = this.eventName
-                binding.words.text = if (this.eventName.isNotBlank()) {
-                    this.eventName.first().toString()
+            with(groupList[position].eventName) {
+                binding.groupName.text = this
+                binding.words.text = if (this.isNotBlank()) {
+                    first().toString()
                 } else ""
+            }
+            with(groupList[position]) {
+                binding.groupDetails.text = "${this.dateTime} Recurring: ${this.isRecurring}"
+
                 binding.clGroup.setOnClickListener {
                     listener.onClicked(this)
                 }
-
-//                binding.editImg.setOnClickListener {
-//                    this.id?.let { it1 -> listener.onItemEdited(position, it1) }
-//                }
-//                binding.cancelImg.setOnClickListener {
-//                    groupList.remove(this)
-//                    notifyDataSetChanged()
-//                     listener.onItemRemoved(this)
-//                }
             }
 
         }
@@ -64,7 +59,7 @@ class GroupListAdapter(
 
     interface OnItemClickListener {
         fun onClicked(event: Event)
-        fun onItemRemoved(item:Event)
+        fun onItemRemoved(item: Event)
 
         fun onItemEdited(position: Int, id: Int)
     }
