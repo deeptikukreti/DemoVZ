@@ -1,9 +1,10 @@
-package com.example.demovz
+package com.example.demovz.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.demovz.R
 import com.example.demovz.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

@@ -1,4 +1,4 @@
-package com.example.demovz
+package com.example.demovz.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.example.demovz.R
 import com.example.demovz.adapter.ActionListAdapter
 import com.example.demovz.databinding.ActivityDeviceDetailBinding
 

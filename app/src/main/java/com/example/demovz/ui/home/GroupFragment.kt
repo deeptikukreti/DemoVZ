@@ -12,12 +12,14 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
-import com.example.demovz.CreateEventActivity
+import com.example.demovz.ui.activity.CreateEventActivity
 import com.example.demovz.R
 import com.example.demovz.adapter.GroupListAdapter
 import com.example.demovz.databinding.FragmentGroupBinding
 import com.example.demovz.db.Event
 import com.example.demovz.db.RoomDb
+import com.example.demovz.ui.activity.EditEventActivity
+import com.example.demovz.ui.activity.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -93,6 +95,19 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
 
     override fun onClicked(event: Event) {
         //startActivity(Intent(requireActivity(), GroupDetailActivity::class.java).putExtra("GROUP_NAME",event.eventName))
+    }
+
+    override fun onItemRemoved(item:Event) {
+        activity?.let {
+            RoomDb.getInstance(
+                it.applicationContext
+            ).eventDao().delete(event = item)
+        }
+
+    }
+
+    override fun onItemEdited(position: Int, id: Int) {
+        startActivity(Intent(activity,EditEventActivity::class.java).putExtra("ID",id))
     }
 
     override fun onDestroyView() {

@@ -1,16 +1,13 @@
-package com.example.demovz
+package com.example.demovz.ui.activity
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.DatePicker
 import android.widget.EditText
-import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
+import com.example.demovz.R
 import com.example.demovz.adapter.DevicesListAdapter
 import com.example.demovz.databinding.ActivityGroupDetailBinding
 import com.example.demovz.db.Device
@@ -41,7 +38,7 @@ class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
 
     @SuppressLint("MissingInflatedId", "NotifyDataSetChanged")
     fun createAlertDialog(){
-        val builder = AlertDialog.Builder(this,R.style.CustomAlertDialog)
+        val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .create()
         val view = layoutInflater.inflate(R.layout.add_device_layout,null)
         val  device_name = view.findViewById<EditText>(R.id.edt_device)
@@ -61,7 +58,7 @@ class GroupDetailActivity : AppCompatActivity(),DevicesListAdapter.OnItemClickLi
     }
 
     override fun onClicked(s:String) {
-        startActivity(Intent(this,DeviceDetailActivity::class.java).putExtra("DEVICE_NAME",s))
+        startActivity(Intent(this, DeviceDetailActivity::class.java).putExtra("DEVICE_NAME",s))
     }
 
     override fun onToggleClicked(s: String, action: String,position: Int) {
