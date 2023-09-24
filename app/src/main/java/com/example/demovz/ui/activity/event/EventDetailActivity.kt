@@ -1,20 +1,22 @@
-package com.example.demovz.ui.activity
+package com.example.demovz.ui.activity.event
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.demovz.R
-import com.example.demovz.adapter.DevicesListAdapter
+import com.example.demovz.adapter.addDevice.AreaAdapter
+import com.example.demovz.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.databinding.ActivityEventDetailBinding
-import com.example.demovz.db.Device
-import com.example.demovz.db.Event
-import com.example.demovz.db.RoomDb
+import com.example.demovz.db.devices.AreaWithDeviceData
+import com.example.demovz.db.events.Device
+import com.example.demovz.db.events.Event
+import com.example.demovz.db.events.RoomDb
 import com.example.demovz.util.ArrayListConverter
 
 class EventDetailActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickListener{
 
     var binding: ActivityEventDetailBinding? = null
+    lateinit var areaAdapter: AreaAdapter
     var deviceList = ArrayList<Device>()
     lateinit var deviceAdapter: DevicesListAdapter
 
@@ -72,10 +74,10 @@ class EventDetailActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickL
                 } else {
                     txtTriggerType.text = "Trigger Type : Event Based"
                 }
-
-                deviceList = ArrayListConverter().toStringArrayList(data.deviceList)
-                deviceAdapter = DevicesListAdapter(deviceList, true).apply{ setOnClickListener(this@EventDetailActivity) }
-                binding?.rvGrp?.adapter = deviceAdapter
+                 var selectedDeviceList = ArrayList<AreaWithDeviceData>()
+                selectedDeviceList = ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
+                areaAdapter = AreaAdapter(selectedDeviceList, true)
+                binding?.rvGrp?.adapter = areaAdapter
             }
         }
     }

@@ -1,10 +1,11 @@
-package com.example.demovz.db
+package com.example.demovz.db.events
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.demovz.db.devices.Area
 import kotlinx.coroutines.flow.Flow
 
 
@@ -27,5 +28,5 @@ interface EventDao  {
     fun getAllEvents(): Flow<List<Event>>
 
     @Query("SELECT * FROM event_table WHERE id LIKE:eventId")
-    fun getEvent(eventId:Int):Event
+    fun getEvent(eventId:Int): Event
 }

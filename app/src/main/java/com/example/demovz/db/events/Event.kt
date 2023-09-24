@@ -1,4 +1,4 @@
-package com.example.demovz.db
+package com.example.demovz.db.events
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -23,4 +23,5 @@ data class Event(
 
 )
 
-data class Device(val deviceName: String, var action: String)
+data class Device(val deviceName: String, var action: String,var isSelected:Boolean=false)
+

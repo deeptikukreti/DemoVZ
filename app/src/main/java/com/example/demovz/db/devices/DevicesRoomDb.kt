@@ -1,4 +1,4 @@
-package com.example.demovz.db
+package com.example.demovz.db.devices
 
 import android.content.Context
 import androidx.room.Database
@@ -7,19 +7,18 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [Event::class], version = 2)
-abstract class RoomDb : RoomDatabase() {
+@Database(entities = [Area::class], version = 1)
+abstract class DevicesRoomDb : RoomDatabase() {
 
-    abstract fun eventDao(): EventDao
+    abstract fun areaDeviceDao(): AreaDeviceDao
 
     companion object {
-        private var instance: RoomDb? = null
+        private var instance: DevicesRoomDb? = null
 
         @Synchronized
-        fun getInstance(ctx: Context): RoomDb {
+        fun getInstance(ctx: Context): DevicesRoomDb {
             if(instance == null)
-                instance = Room.databaseBuilder(ctx.applicationContext, RoomDb::class.java,
-                    "event_table")
+                instance = Room.databaseBuilder(ctx.applicationContext, DevicesRoomDb::class.java,"area_device_table")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
                     .allowMainThreadQueries()

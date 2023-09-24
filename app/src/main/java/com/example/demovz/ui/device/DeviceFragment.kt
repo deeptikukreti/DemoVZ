@@ -7,18 +7,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.demovz.adapter.DevicesListAdapter
+import com.example.demovz.adapter.addDevice.AreaAdapter
+import com.example.demovz.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.databinding.FragmentDeviceBinding
-import com.example.demovz.db.Device
+import com.example.demovz.db.devices.Area
+import com.example.demovz.db.devices.AreaWithDeviceData
+import com.example.demovz.db.devices.DevicesRoomDb
+import com.example.demovz.db.devices.SelectDeviceData
+import com.example.demovz.db.events.Device
+import com.example.demovz.util.ArrayListConverter
 
-class DeviceFragment : Fragment(), DevicesListAdapter.OnItemClickListener {
+class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
 
     private lateinit var viewModel: DeviceViewModel
     private var _binding: FragmentDeviceBinding? = null
     private val binding get() = _binding!!
-    private lateinit var deviceAdapter: DevicesListAdapter
-    private var deviceList = ArrayList<Device>()
 
+    lateinit var areaAdapter: AreaAdapter
+    var areaDeviceList = ArrayList<Area>()
+    private var selectedDeviceList = ArrayList<AreaWithDeviceData>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,33 +33,36 @@ class DeviceFragment : Fragment(), DevicesListAdapter.OnItemClickListener {
         viewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
         _binding = FragmentDeviceBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val device1 = Device("TV", "On")
-        val device2 = Device("Led", "On")
-        val device3 = Device("Lights", "OFF")
-        deviceList.add(device1)
-        deviceList.add(device2)
-        deviceList.add(device3)
-
-        deviceAdapter =
-            DevicesListAdapter(deviceList, false).apply { setOnClickListener(this@DeviceFragment) }
-        binding.rvGrp.adapter = deviceAdapter
-
+        activity?.let {
+            DevicesRoomDb.getInstance(it!!.applicationContext).areaDeviceDao().getAllAreaWithDevices()
+                .also { areaDeviceList.addAll(it) }
+        }
+        areaDeviceList.forEach { area ->
+            val deviceList = ArrayListConverter().toStringArrayList(area.deviceList)
+            selectedDeviceList.add(
+                AreaWithDeviceData(
+                    area.areaId,
+                    area.areaName,
+                    deviceList
+                )
+            )
+        }
+        areaAdapter = AreaAdapter(selectedDeviceList,false).apply { this.setOnClickListener(this@DeviceFragment) }
+        binding?.rvGrp?.adapter = areaAdapter
         return root
     }
 
     override fun onClicked(s: String) {
-        
+        TODO("Not yet implemented")
     }
 
-    override fun onToggleClicked(s: String, action: String, position: Int) {
-        deviceList[position].action=action
+    override fun onToggleClicked(areaPos: Int, s: String, action: String, devicePos: Int) {
+        selectedDeviceList[areaPos].deviceList[devicePos].action = action
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onDeviceRemoved(position: Int) {
-        deviceList.removeAt(position)
-        deviceAdapter.notifyDataSetChanged()
+    override fun onDeviceRemoved(areaPos: Int, position: Int) {
+        selectedDeviceList[areaPos].deviceList.removeAt(position)
+        areaAdapter.notifyDataSetChanged()
     }
 
 }

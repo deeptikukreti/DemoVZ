@@ -13,7 +13,7 @@
         android:theme="@style/Theme.DemoVZ"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activity.EventDetailActivity"
+            android:name=".ui.activity.event.EventDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.SplashActivity"
@@ -26,10 +26,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.EditEventActivity"
+            android:name=".ui.activity.event.EditEventActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.CreateEventActivity"
+            android:name=".ui.activity.event.CreateEventActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.DeviceDetailActivity"
