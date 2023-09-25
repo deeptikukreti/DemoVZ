@@ -33,6 +33,12 @@ class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
         viewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
         _binding = FragmentDeviceBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        binding?.appBar?.apply {
+            ivLogo.visibility=View.VISIBLE
+            backIcon.visibility=View.GONE
+            txtTitle?.text="Devices"
+        }
+
         activity?.let {
             DevicesRoomDb.getInstance(it!!.applicationContext).areaDeviceDao().getAllAreaWithDevices()
                 .also { areaDeviceList.addAll(it) }
@@ -47,7 +53,7 @@ class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
                 )
             )
         }
-        areaAdapter = AreaAdapter(selectedDeviceList,false).apply { this.setOnClickListener(this@DeviceFragment) }
+        areaAdapter = AreaAdapter(selectedDeviceList,false, activity!!).apply { this.setOnClickListener(this@DeviceFragment) }
         binding?.rvGrp?.adapter = areaAdapter
         return root
     }
@@ -56,7 +62,7 @@ class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
         TODO("Not yet implemented")
     }
 
-    override fun onToggleClicked(areaPos: Int, s: String, action: String, devicePos: Int) {
+    override fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int) {
         selectedDeviceList[areaPos].deviceList[devicePos].action = action
     }
 
@@ -64,5 +70,8 @@ class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
         selectedDeviceList[areaPos].deviceList.removeAt(position)
         areaAdapter.notifyDataSetChanged()
     }
-
+    override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
+        selectedDeviceList[areaPos].isExpanded=isExpanded
+        areaAdapter.notifyDataSetChanged()
+    }
 }

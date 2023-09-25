@@ -1,46 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar_layout_black" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:fillViewport="true"
+    app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ui.activity.event.EditEventActivity">
 
-        <TextView
-            android:id="@+id/txt_create_event"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Event Detail"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:padding="20dp"
-            android:drawablePadding="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:drawableStartCompat="@drawable/baseline_arrow_back" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/edit_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            app:layout_constraintEnd_toStartOf="@id/cancel_img"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_edit_24" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/cancel_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_cancel_24" />
 
         <TextView
             android:id="@+id/txt_evnt_name"
@@ -49,11 +38,10 @@
             android:text="Event/Scene Name : "
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_margin="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_create_event"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/txt_trigger_type"
@@ -73,7 +61,7 @@
             android:id="@+id/grpSelectDateTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="select_date_time,tvDateTime,cb_recurring"/>
+            app:constraint_referenced_ids="select_date_time,tvDateTime,txt_recurring"/>
         <TextView
             android:id="@+id/select_date_time"
             android:layout_width="match_parent"
@@ -102,8 +90,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/select_date_time"/>
 
-        <CheckBox
-            android:id="@+id/cb_recurring"
+        <TextView
+            android:id="@+id/txt_recurring"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Repeating Event"
@@ -116,20 +104,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDateTime"/>
 
+        <TextView
+            android:id="@+id/txt_device_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Devices List :"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_margin="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_recurring"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_grp"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:layout_marginBottom="40dp"
             android:nestedScrollingEnabled="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cb_recurring"
+            app:layout_constraintTop_toBottomOf="@id/txt_device_list"
             tools:itemCount="3"
             tools:listitem="@layout/device_item_layout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

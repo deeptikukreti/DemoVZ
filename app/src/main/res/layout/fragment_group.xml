@@ -6,9 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.GroupFragment">
 
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar_layout_black" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar_layout_black" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <TextView
         android:id="@+id/tv_welcome"
@@ -22,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar" />
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_router_details"

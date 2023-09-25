@@ -34,7 +34,7 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
         viewModel = ViewModelProvider(this)[GroupViewModel::class.java]
         _binding = FragmentGroupBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        binding?.appBar?.txtTitle?.text = "Home"
         grpAdapter = GroupListAdapter(groupList).apply { setOnClickListener(this@GroupFragment) }
         binding.rvGrp.adapter = grpAdapter
         binding.addBtn.setOnClickListener {
@@ -46,9 +46,12 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
             )
         }
 
-        CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
-
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
     }
 
     private suspend fun getGroupDataList() {

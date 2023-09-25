@@ -23,5 +23,5 @@ data class Event(
 
 )
 
-data class Device(val deviceName: String, var action: String,var isSelected:Boolean=false)
+data class Device(val deviceName: String, var action: Boolean,var isSelected:Boolean=false)
 

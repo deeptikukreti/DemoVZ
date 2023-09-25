@@ -1,16 +1,19 @@
 package com.example.demovz.adapter.addDevice
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.demovz.R
 import com.example.demovz.databinding.AreaItemLayoutBinding
 import com.example.demovz.db.devices.AreaWithDeviceData
 
 class AreaAdapter(
     private var areaList: ArrayList<AreaWithDeviceData>,
-    val isEventDetail :Boolean
+    val isEventDetail: Boolean,
+    val context:Context
 ) : RecyclerView.Adapter<AreaAdapter.ViewHolder>() {
 
 
@@ -32,13 +35,22 @@ class AreaAdapter(
         else {
             with(holder) {
                 binding.apply {
+                    cardViewMain.visibility = View.VISIBLE
                     with(areaList[position]) {
-                        if (this.deviceList.isEmpty())
-                            cardViewMain.visibility = View.GONE
-                        else
-                            cardViewMain.visibility = View.VISIBLE
-
                         tvAreaName.text = this.areaName
+                        binding.words.text = if (this.areaName.isNotBlank()) {
+                            this.areaName.first().toString()
+                        } else ""
+                        if(this.isExpanded)
+                        {
+                            dropIcon.setImageDrawable(context.getDrawable(R.drawable.baseline_arrow_down))
+                            dropIcon.rotation=180f
+                        }
+                        else{
+                            dropIcon.setImageDrawable(context.getDrawable(R.drawable.baseline_arrow_down))
+                            dropIcon.rotation=0f
+                        }
+
                         val deviceAdapter = DevicesListAdapter(this.deviceList, isEventDetail)
                         deviceAdapter.setOnClickListener(object :
                             DevicesListAdapter.OnItemClickListener {
@@ -46,7 +58,7 @@ class AreaAdapter(
 //                          TODO("Not yet implemented")
                             }
 
-                            override fun onToggleClicked(s: String, action: String, pos: Int) {
+                            override fun onToggleClicked(s: String, action: Boolean, pos: Int) {
                                 deviceList[pos].action = action
                                 listener.onToggleClicked(adapterPosition, s, action, pos)
                             }
@@ -59,9 +71,21 @@ class AreaAdapter(
 
                         })
                         rvDevices.adapter = deviceAdapter
-                    }
 
+                        dropIcon.setOnClickListener {
+                            if(this.isExpanded)
+                            {
+                                rvDevices.visibility=View.GONE
+                                listener.onExpanded(adapterPosition,false)
+                            }
+                            else{
+                                rvDevices.visibility=View.VISIBLE
+                                listener.onExpanded(adapterPosition,true)
+                            }
+                        }
+                    }
                 }
+
             }
         }
     }
@@ -78,8 +102,9 @@ class AreaAdapter(
 
     interface OnItemClickListener {
         fun onClicked(s: String)
-        fun onToggleClicked(areaPos: Int, s: String, action: String, devicePos: Int)
+        fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int)
         fun onDeviceRemoved(areaPos: Int, devicePos: Int)
+        fun onExpanded(areaPos: Int, isExpanded: Boolean)
     }
 
 }

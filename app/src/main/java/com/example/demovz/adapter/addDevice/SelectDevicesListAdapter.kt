@@ -28,10 +28,15 @@ class SelectDevicesListAdapter(
                 with(devicesList[position]) {
                     txtDeviceName.text = "${this.device.deviceName} \n Area : ${this.areaName}"
                     cbSelectDevice.isChecked = this.device.isSelected
-                    cbSelectDevice.setOnCheckedChangeListener { _, isChecked ->
-                        devicesList[adapterPosition].device.isSelected=isChecked
-                        listener.onClicked(this, isChecked, adapterPosition)
+
+                    cbSelectDevice.setOnClickListener {
+                        devicesList[adapterPosition].device.isSelected=cbSelectDevice.isChecked
+                        listener.onClicked(devicesList[adapterPosition], cbSelectDevice.isChecked, adapterPosition)
                     }
+//                    cbSelectDevice.setOnCheckedChangeListener { _, isChecked ->
+//                        devicesList[adapterPosition].device.isSelected=isChecked
+//                        listener.onClicked(this, isChecked, adapterPosition)
+//                    }
                 }
             }
         }

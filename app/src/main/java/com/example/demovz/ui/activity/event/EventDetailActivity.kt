@@ -13,7 +13,7 @@ import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
 import com.example.demovz.util.ArrayListConverter
 
-class EventDetailActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickListener{
+class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener {
 
     var binding: ActivityEventDetailBinding? = null
     lateinit var areaAdapter: AreaAdapter
@@ -26,15 +26,22 @@ class EventDetailActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickL
     var isRecurring: Boolean = false
     var id: Int? = 0
     lateinit var data: Event
+    var selectedDeviceList = ArrayList<AreaWithDeviceData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEventDetailBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         id = intent?.extras?.getInt("ID")
 
-        binding?.apply {
 
-            txtCreateEvent.setOnClickListener {
+        binding?.appBar?.apply {
+            ivLogo.visibility = View.GONE
+            backIcon.visibility = View.VISIBLE
+            editImg.visibility = View.VISIBLE
+            cancelImg.visibility = View.VISIBLE
+            txtTitle?.text = "Event Detail"
+
+            backIcon.setOnClickListener {
                 onBackPressed()
             }
 
@@ -70,13 +77,17 @@ class EventDetailActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickL
                     txtTriggerType.text = "Trigger Type : Time Based"
                     grpSelectDateTime.visibility = View.VISIBLE
                     tvDateTime.text = data.dateTime
-                    cbRecurring.isChecked = data.isRecurring
+                    if (data.isRecurring)
+                        txtRecurring.text = "Event Type : Recurring"
+                    else
+                        txtRecurring.text = "Event Type : One Time"
                 } else {
                     txtTriggerType.text = "Trigger Type : Event Based"
                 }
-                 var selectedDeviceList = ArrayList<AreaWithDeviceData>()
-                selectedDeviceList = ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
-                areaAdapter = AreaAdapter(selectedDeviceList, true)
+
+                selectedDeviceList =
+                    ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
+                areaAdapter = AreaAdapter(selectedDeviceList, true, this@EventDetailActivity).apply { this.setOnClickListener(this@EventDetailActivity) }
                 binding?.rvGrp?.adapter = areaAdapter
             }
         }
@@ -88,14 +99,21 @@ class EventDetailActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickL
     }
 
     override fun onClicked(s: String) {
-        //"Not yet implemented"
+       // TODO("Not yet implemented")
     }
 
-    override fun onToggleClicked(s: String, action: String, position: Int) {
-        //"Not yet implemented"
+    override fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int) {
+        //TODO("Not yet implemented")
     }
 
-    override fun onDeviceRemoved(position: Int) {
-        //"Not yet implemented"
+    override fun onDeviceRemoved(areaPos: Int, devicePos: Int) {
+       // TODO("Not yet implemented")
     }
+
+    override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
+        selectedDeviceList[areaPos].isExpanded = isExpanded
+        areaAdapter.notifyDataSetChanged()
+    }
+
+
 }

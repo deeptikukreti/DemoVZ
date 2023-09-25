@@ -35,22 +35,15 @@ class DevicesListAdapter(
                 DeviceItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             ViewHolder(view)
         }
-//        val binding =
-//            DeviceItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//
-//        return ViewHolder(binding)
     }
-
-//    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-//        TODO("Not yet implemented")
-//    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (isEventDetail) {
             with(holder as DeviceDetailViewHolder) {
                 binding.apply {
+                    val action = if(devicesList[position].action) "ON" else "OFF"
                     txtDeviceName.text =
-                        "${devicesList[position].deviceName} : ${devicesList[position].action.toUpperCase()}"
+                        "${devicesList[position].deviceName} : $action"
                 }
             }
         } else {
@@ -59,7 +52,7 @@ class DevicesListAdapter(
                     with(devicesList[position]) {
 
                         txtDeviceName.text = this.deviceName
-                        toggleBtn.text = this.action
+                        toggleBtn.isChecked = this.action
 
                         txtDeviceName.setOnClickListener {
                             listener.onClicked(this.deviceName)
@@ -77,7 +70,7 @@ class DevicesListAdapter(
                         toggleBtn.setOnClickListener {
                             listener.onToggleClicked(
                                 this.deviceName,
-                                toggleBtn.text.toString(),
+                                toggleBtn.isChecked,
                                 adapterPosition
                             )
                         }
@@ -101,7 +94,7 @@ class DevicesListAdapter(
 
     interface OnItemClickListener {
         fun onClicked(s: String)
-        fun onToggleClicked(s: String, action: String, position: Int)
+        fun onToggleClicked(s: String, action: Boolean, position: Int)
         fun onDeviceRemoved(position: Int)
     }
 

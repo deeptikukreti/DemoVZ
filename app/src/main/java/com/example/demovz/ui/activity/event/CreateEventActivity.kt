@@ -49,6 +49,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
 
     var areaDeviceList = ArrayList<Area>()
     private var selectedDeviceList = ArrayList<AreaWithDeviceData>()
+    private var selectedDeviceListForUI = ArrayList<AreaWithDeviceData>()
     private var selectDeviceList = ArrayList<SelectDeviceData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +75,20 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     private fun viewInitialization() {
-        areaAdapter = AreaAdapter(selectedDeviceList,false).apply { this.setOnClickListener(this@CreateEventActivity) }
+        binding?.appBar?.apply {
+            ivLogo.visibility = View.GONE
+            backIcon.visibility = View.VISIBLE
+            txtTitle?.text = "Create Event"
+
+            backIcon.setOnClickListener {
+                onBackPressed()
+            }
+        }
+        areaAdapter = AreaAdapter(
+            selectedDeviceListForUI,
+            false,
+            this
+        ).apply { this.setOnClickListener(this@CreateEventActivity) }
         binding?.rvGrp?.adapter = areaAdapter
         binding?.apply {
 
@@ -128,6 +142,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                 }
             }
         }
+
     }
 
     private fun saveEventDetails() {
@@ -136,7 +151,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             triggerType = triggerType,
             dateTime = dateTime,
             isRecurring = isRecurring,
-            deviceList = ArrayListConverter().fromStringArrayListAreaWithDevice(selectedDeviceList)
+            deviceList = ArrayListConverter().fromStringArrayListAreaWithDevice(selectedDeviceListForUI)
         )
         RoomDb.getInstance(applicationContext).eventDao().insert(eventObj)
         onBackPressed();
@@ -147,12 +162,17 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         TODO("Not yet implemented")
     }
 
-    override fun onToggleClicked(areaPos: Int, s: String, action: String, devicePos: Int) {
-        selectedDeviceList[areaPos].deviceList[devicePos].action = action
+    override fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int) {
+        selectedDeviceListForUI[areaPos].deviceList[devicePos].action = action
     }
 
     override fun onDeviceRemoved(areaPos: Int, position: Int) {
-        selectedDeviceList[areaPos].deviceList.removeAt(position)
+        selectedDeviceListForUI[areaPos].deviceList.removeAt(position)
+        areaAdapter.notifyDataSetChanged()
+    }
+
+    override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
+        selectedDeviceListForUI[areaPos].isExpanded=isExpanded
         areaAdapter.notifyDataSetChanged()
     }
 
@@ -185,21 +205,18 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         val save = view.findViewById<Button>(R.id.btn_save)
         val cancel = view.findViewById<Button>(R.id.btn_cancel)
         builder.setView(view)
-        var _selectedDeviceList = ArrayList<SelectDeviceData>()
         val deviceAdapter = SelectDevicesListAdapter()
         deviceAdapter.setOnClickListener(object :
             SelectDevicesListAdapter.OnItemClickListener {
             override fun onClicked(i: SelectDeviceData, isChecked: Boolean, position: Int) {
                 if (isChecked) {
                     selectDeviceList.get(position).device.isSelected = true
-                    _selectedDeviceList.add(i)
                     selectedDeviceList.forEach {
                         if (it.areaId == i.areaId)
                             it.deviceList.add(i.device)
                     }
                 } else {
                     selectDeviceList.get(position).device.isSelected = false
-                    _selectedDeviceList.remove(i)
                     selectedDeviceList.forEach {
                         if (it.areaId == i.areaId)
                             it.deviceList.remove(i.device)
@@ -211,20 +228,24 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         deviceAdapter.addList(selectDeviceList)
         rvSelectDevice.adapter = deviceAdapter
         save.setOnClickListener {
-            var isDeviceSelected=false
-            for(item in selectedDeviceList) {
-               if(item.deviceList.size>0)
-               {
-                   isDeviceSelected=true
-                   break
-               }
+            var isDeviceSelected = false
+            for (item in selectedDeviceList) {
+                if (item.deviceList.size > 0) {
+                    isDeviceSelected = true
+                    break
+                }
             }
-            if(isDeviceSelected) {
+            if (isDeviceSelected) {
+                selectedDeviceListForUI.clear()
+                selectedDeviceList.forEach {
+                    if (it.deviceList.size>0)
+                        selectedDeviceListForUI.add(it)
+                }
                 areaAdapter.notifyDataSetChanged()
-                binding?.btnSaveEvent?.visibility=View.VISIBLE
+                binding?.btnSaveEvent?.visibility = View.VISIBLE
                 builder.dismiss()
-            }else{
-                Toast.makeText(this,"Please select any device",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Please select any device", Toast.LENGTH_LONG).show()
             }
         }
         cancel.setOnClickListener {

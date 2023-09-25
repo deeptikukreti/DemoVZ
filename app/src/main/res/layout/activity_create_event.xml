@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar_layout_black" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:fillViewport="true"
+    app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -77,8 +97,7 @@
         <RadioButton
             android:id="@+id/rb_time_based"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/AppRadioAppStyle"
+            android:layout_height="50dp"
             android:text="Time Based" />
         <RadioButton
             android:id="@+id/rb_event_based"
@@ -88,7 +107,7 @@
             android:alpha="0.5"
             android:clickable="false"/>
     </RadioGroup>
-
+<!--___________group for time based event___________________________________________________-->
     <androidx.constraintlayout.widget.Group
         android:visibility="gone"
         android:id="@+id/grpSelectDateTime"
@@ -122,7 +141,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/select_date_time"/>
-
     <CheckBox
         android:id="@+id/cb_recurring"
         android:layout_width="match_parent"
@@ -135,8 +153,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDateTime"/>
+    <!--____________add sensor device group event based task_________________________________________-->
 
-
+<!--____________add devices group__________________________________________-->
     <androidx.constraintlayout.widget.Group
         android:id="@+id/grpAddDevice"
         android:visibility="gone"
@@ -182,9 +201,11 @@
         android:layout_height="50dp"
         android:layout_margin="20dp"
         android:text="SAVE"
+        android:backgroundTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_grp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
