@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.demovz.db.devices.Area
 import kotlinx.coroutines.flow.Flow
 
 
@@ -29,4 +28,7 @@ interface EventDao  {
 
     @Query("SELECT * FROM event_table WHERE id LIKE:eventId")
     fun getEvent(eventId:Int): Event
+
+    @Query("SELECT * FROM event_table WHERE trigger_type LIKE:eventId")
+    fun getEventByTrigger(eventId:Int): Flow<List<Event>>
 }

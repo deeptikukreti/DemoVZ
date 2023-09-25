@@ -43,7 +43,7 @@ class ActivityBasedEventFragment : Fragment(), GroupListAdapter.OnItemClickListe
 
     private suspend fun getGroupDataList() {
         lifecycleScope.launch {
-            RoomDb.getInstance(requireContext()).eventDao().getAllEvents().collect { eventsList ->
+            RoomDb.getInstance(requireContext()).eventDao().getEventByTrigger(2).collect { eventsList ->
                 if (eventsList.isNotEmpty()) {
                     grpAdapter.submitList(eventsList)
                 }
