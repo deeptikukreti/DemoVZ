@@ -64,4 +64,8 @@
     <string name="fios_routers">Fios Routers</string>
     <string name="on">ON</string>
     <string name="status">Status:</string>
+    <string name="add_action">Add Action</string>
+    <string name="event_scene_name">Event/Scene Name</string>
+    <string name="choose_trigger_type">Choose Trigger Type</string>
+    <string name="events_list">My Events List</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.example.demovz.ui.device
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,13 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.demovz.adapter.addDevice.AreaAdapter
-import com.example.demovz.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.databinding.FragmentDeviceBinding
 import com.example.demovz.db.devices.Area
 import com.example.demovz.db.devices.AreaWithDeviceData
 import com.example.demovz.db.devices.DevicesRoomDb
-import com.example.demovz.db.devices.SelectDeviceData
-import com.example.demovz.db.events.Device
 import com.example.demovz.util.ArrayListConverter
 
 class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {

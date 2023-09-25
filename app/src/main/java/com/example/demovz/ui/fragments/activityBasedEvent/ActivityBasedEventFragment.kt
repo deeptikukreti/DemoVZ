@@ -1,4 +1,4 @@
-package com.example.demovz.ui.home
+package com.example.demovz.ui.fragments.activityBasedEvent
 
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
@@ -8,22 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.example.demovz.ui.activity.event.CreateEventActivity
 import com.example.demovz.adapter.GroupListAdapter
-import com.example.demovz.databinding.FragmentGroupBinding
+import com.example.demovz.databinding.FragmentActivityBasedEventBinding
 import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
-import com.example.demovz.ui.activity.event.EditEventActivity
 import com.example.demovz.ui.activity.event.EventDetailActivity
-import com.example.demovz.ui.activity.event.EventListActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
-
-    private lateinit var viewModel: GroupViewModel
-    private var _binding: FragmentGroupBinding? = null
+class ActivityBasedEventFragment : Fragment(), GroupListAdapter.OnItemClickListener {
+    private lateinit var viewModel: ActivityBasedEventViewModel
+    private var _binding: FragmentActivityBasedEventBinding? = null
     private val binding get() = _binding!!
     private var groupList = ArrayList<Event>()
     private lateinit var grpAdapter: GroupListAdapter
@@ -32,31 +28,17 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[GroupViewModel::class.java]
-        _binding = FragmentGroupBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[ActivityBasedEventViewModel::class.java]
+        _binding = FragmentActivityBasedEventBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.appBar.txtTitle.text = "Home"
-        grpAdapter = GroupListAdapter(groupList).apply { setOnClickListener(this@GroupFragment) }
-        binding.rvGrp.adapter = grpAdapter
-        binding.addBtn.setOnClickListener {
-            startActivity(
-                Intent(
-                    requireActivity(),
-                    CreateEventActivity::class.java
-                )
-            )
-        }
 
-        binding.txtGrp.setOnClickListener {
-            startActivity(Intent(requireActivity(), EventListActivity::class.java))
-        }
+        grpAdapter = GroupListAdapter(groupList).apply { setOnClickListener(this@ActivityBasedEventFragment
+        ) }
+        binding.rvGrp.adapter = grpAdapter
+
+        CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
 
         return root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
     }
 
     private suspend fun getGroupDataList() {
@@ -73,8 +55,4 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
         startActivity(Intent(activity, EventDetailActivity::class.java).putExtra("ID", event.id))
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
