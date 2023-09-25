@@ -24,6 +24,7 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     var triggerType: Int = 0 //1=time base ,2=event based
     var dateTime: String = ""
     var isRecurring: Boolean = false
+    var sensorDevice=""
     var id: Int? = 0
     lateinit var data: Event
     var selectedDeviceList = ArrayList<AreaWithDeviceData>()
@@ -72,6 +73,7 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                 triggerType = data.triggerType
                 dateTime = data.dateTime
                 isRecurring = data.isRecurring
+                sensorDevice=data.sensorDevice
                 txtEvntName.text = "Event/Scene Name : " + data.eventName
                 if (data.triggerType == 1) {
                     txtTriggerType.text = "Trigger Type : Time Based"
@@ -83,6 +85,8 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         txtRecurring.text = "Event Type : One Time"
                 } else {
                     txtTriggerType.text = "Trigger Type : Event Based"
+                    txtSensorDevice.visibility=View.VISIBLE
+                    txtSensorDevice.text="Sensor Device : ${data.sensorDevice}"
                 }
 
                 selectedDeviceList =

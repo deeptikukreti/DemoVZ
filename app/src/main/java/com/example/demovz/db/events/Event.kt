@@ -18,6 +18,8 @@ data class Event(
     val dateTime: String,
     @ColumnInfo(name = "is_recurring")
     val isRecurring: Boolean,
+    @ColumnInfo(name = "sensor_device")
+    val sensorDevice: String,
     @ColumnInfo(name = "device_list")
     val deviceList: String
 

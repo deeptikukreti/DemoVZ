@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         tools:context=".ui.activity.event.EditEventActivity">
 
-
         <TextView
             android:id="@+id/txt_evnt_name"
             android:layout_width="match_parent"
@@ -55,55 +54,75 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_evnt_name"/>
 
-
-        <androidx.constraintlayout.widget.Group
-            android:visibility="gone"
-            android:id="@+id/grpSelectDateTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="select_date_time,tvDateTime,txt_recurring"/>
-        <TextView
-            android:id="@+id/select_date_time"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_selection_based"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Date &amp; Time"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_margin="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_trigger_type"/>
-        <TextView
-            android:id="@+id/tvDateTime"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Select Date &amp; Time"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingHorizontal="10dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:drawableEnd="@drawable/baseline_calendar"
-            android:background="@drawable/rectangle"
-            android:layout_marginHorizontal="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/select_date_time"/>
+            app:layout_constraintTop_toBottomOf="@id/txt_trigger_type">
+            <!--**********Selection ui for time based event*****************-->
+            <androidx.constraintlayout.widget.Group
+                android:visibility="gone"
+                android:id="@+id/grpSelectDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="select_date_time,tvDateTime,txt_recurring"/>
+            <TextView
+                android:id="@+id/select_date_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Date &amp; Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/tvDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Select Date &amp; Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/baseline_calendar"
+                android:background="@drawable/rectangle"
+                android:layout_marginHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/select_date_time"/>
+            <TextView
+                android:id="@+id/txt_recurring"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Repeating Event"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="20dp"
+                android:clickable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDateTime"/>
+            <!--**********Selection ui for event based event*****************-->
 
-        <TextView
-            android:id="@+id/txt_recurring"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Repeating Event"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:padding="20dp"
-            android:clickable="false"
-            android:layout_marginHorizontal="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDateTime"/>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/txt_sensor_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Date &amp; Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!--********** ui for list of devices*****************-->
         <TextView
             android:id="@+id/txt_device_list"
             android:layout_width="match_parent"
@@ -111,10 +130,10 @@
             android:text="Devices List :"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_margin="20dp"
+            android:layout_marginHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_recurring"/>
+            app:layout_constraintTop_toBottomOf="@id/layout_selection_based"/>
 
 
         <androidx.recyclerview.widget.RecyclerView

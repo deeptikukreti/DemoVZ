@@ -8,8 +8,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -49,6 +52,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     var triggerType: Int = 0 //1=time base ,2=event based
     var dateTime: String = ""
     var isRecurring: Boolean = false
+    var sensorDevice=""
     var id: Int? = 0
 
     var areaDeviceList = ArrayList<Area>()
@@ -56,16 +60,42 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     private var selectedDeviceListForUI = ArrayList<AreaWithDeviceData>()
     private var selectDeviceList = ArrayList<SelectDeviceData>()
 
+    val list = arrayListOf(
+        "Please Select Sensor Device: ",
+        "Main Door Sensor",
+        "Bedroom Door Sensor",
+        "Kitchen Door sensor"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditEventBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         id = intent?.extras?.getInt("ID")
         setDevice()
+        setSpinner()
         setData()
         viewInitialization()
     }
+    private fun setSpinner() {
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
 
+        binding?.spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                // You can define your actions as you want
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                if (position == 0) {
+                    (parent?.getChildAt(position) as TextView).setTextColor(getColor(R.color.colorGrey))
+                } else {
+                    sensorDevice=list[position]
+                    binding?.grpAddDevice?.visibility=View.VISIBLE
+                }
+            }
+        }
+        binding?.spinner?.adapter = adapter
+    }
     private fun setData() {
         val data = RoomDb.getInstance(applicationContext).eventDao().getEvent(id!!)
         if (data != null) {
@@ -74,6 +104,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                 triggerType = data.triggerType
                 dateTime = data.dateTime
                 isRecurring = data.isRecurring
+                sensorDevice = data.sensorDevice
                 edtEventName.setText(data.eventName)
                 if (data.triggerType == 1) {
                     rbTimeBased.isChecked = true
@@ -82,7 +113,11 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                     tvDateTime.text = data.dateTime
                     cbRecurring.isChecked = data.isRecurring
                 } else
+                {
                     rbEventBased.isChecked = true
+                    grpSelectEventType.visibility = View.VISIBLE
+                    binding?.spinner?.setSelection(list.indexOf(sensorDevice))
+                }
 
                 btnSaveEvent.visibility = View.VISIBLE
                 selectedDeviceListForUI =
@@ -153,16 +188,24 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
         binding?.apply {
 
             rgTriggerType.setOnCheckedChangeListener { radioGroup, i ->
-                when (i) {
-                    R.id.rb_time_based -> {
-                        triggerType = 1
-                        grpSelectDateTime.visibility = View.VISIBLE
-                    }
+                    when (i) {
+                        R.id.rb_time_based -> {
+                            sensorDevice=""
+                            triggerType = 1
+                            binding?.spinner?.setSelection(0)
+                            grpSelectDateTime.visibility = View.VISIBLE
+                            grpSelectEventType.visibility = View.GONE
+                        }
 
-                    R.id.rb_event_based -> {
-                        triggerType = 2
+                        R.id.rb_event_based -> {
+                            triggerType = 2
+                            isRecurring=false
+                            dateTime=""
+                            tvDateTime.text=""
+                            grpSelectDateTime.visibility = View.GONE
+                            grpSelectEventType.visibility = View.VISIBLE
+                        }
                     }
-                }
             }
 
             tvDateTime.setOnClickListener {
@@ -196,7 +239,21 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                         "Please enter event name",
                         Toast.LENGTH_LONG
                     ).show()
-                } else {
+                }
+               else if (triggerType==1 && dateTime.isEmpty()) {
+                    Toast.makeText(
+                        this@EditEventActivity,
+                        "Please select date and time",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                else if (triggerType==2 && sensorDevice.isEmpty()) {
+                    Toast.makeText(
+                        this@EditEventActivity,
+                        "Please select sensor device type",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }else {
                     eventName = edtEventName.text.toString()
                     saveEventDetails()
                 }
@@ -211,6 +268,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
             triggerType = triggerType,
             dateTime = dateTime,
             isRecurring = isRecurring,
+            sensorDevice=sensorDevice,
             deviceList = ArrayListConverter().fromStringArrayListAreaWithDevice(
                 selectedDeviceListForUI
             )
