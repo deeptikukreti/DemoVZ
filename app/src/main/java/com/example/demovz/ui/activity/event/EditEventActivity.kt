@@ -188,16 +188,24 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
         binding?.apply {
 
             rgTriggerType.setOnCheckedChangeListener { radioGroup, i ->
-                when (i) {
-                    R.id.rb_time_based -> {
-                        triggerType = 1
-                        grpSelectDateTime.visibility = View.VISIBLE
-                    }
+                    when (i) {
+                        R.id.rb_time_based -> {
+                            sensorDevice=""
+                            triggerType = 1
+                            binding?.spinner?.setSelection(0)
+                            grpSelectDateTime.visibility = View.VISIBLE
+                            grpSelectEventType.visibility = View.GONE
+                        }
 
-                    R.id.rb_event_based -> {
-                        triggerType = 2
+                        R.id.rb_event_based -> {
+                            triggerType = 2
+                            isRecurring=false
+                            dateTime=""
+                            tvDateTime.text=""
+                            grpSelectDateTime.visibility = View.GONE
+                            grpSelectEventType.visibility = View.VISIBLE
+                        }
                     }
-                }
             }
 
             tvDateTime.setOnClickListener {
@@ -231,7 +239,21 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                         "Please enter event name",
                         Toast.LENGTH_LONG
                     ).show()
-                } else {
+                }
+               else if (triggerType==1 && dateTime.isEmpty()) {
+                    Toast.makeText(
+                        this@EditEventActivity,
+                        "Please select date and time",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                else if (triggerType==2 && sensorDevice.isEmpty()) {
+                    Toast.makeText(
+                        this@EditEventActivity,
+                        "Please select sensor device type",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }else {
                     eventName = edtEventName.text.toString()
                     saveEventDetails()
                 }
