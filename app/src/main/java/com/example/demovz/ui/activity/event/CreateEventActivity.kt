@@ -3,10 +3,14 @@ package com.example.demovz.ui.activity.event
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -25,6 +29,7 @@ import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
 import com.example.demovz.util.ArrayListConverter
 import java.util.Calendar
+
 
 class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -46,6 +51,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     var triggerType: Int = 0 //1=time base ,2=event based
     var dateTime: String = ""
     var isRecurring: Boolean = false
+    var sensorDevice=""
 
     var areaDeviceList = ArrayList<Area>()
     private var selectedDeviceList = ArrayList<AreaWithDeviceData>()
@@ -55,6 +61,12 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         super.onCreate(savedInstanceState)
         binding = ActivityCreateEventBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        getDeviceData()
+        setSpinner()
+        viewInitialization()
+    }
+
+    private fun getDeviceData() {
         DevicesRoomDb.getInstance(applicationContext).areaDeviceDao().getAllAreaWithDevices()
             .also { areaDeviceList.addAll(it) }
         areaDeviceList.forEach { area ->
@@ -71,7 +83,35 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
 
             }
         }
-        viewInitialization()
+    }
+
+    private fun setSpinner() {
+
+        val list = arrayListOf(
+            "Please Select Sensor Device: ",
+            "Main Door Sensor",
+            "Bedroom Door Sensor",
+            "Kitchen Door sensor"
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
+
+        binding?.spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                // You can define your actions as you want
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                if (position == 0) {
+                    (parent?.getChildAt(position) as TextView).setTextColor(getColor(R.color.colorGrey))
+                } else {
+                    sensorDevice=list[position]
+                    binding?.grpAddDevice?.visibility=View.VISIBLE
+                }
+            }
+        }
+        binding?.spinner?.adapter = adapter
+
     }
 
     private fun viewInitialization() {
@@ -101,6 +141,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
 
                     R.id.rb_event_based -> {
                         triggerType = 2
+                        grpSelectEventType.visibility = View.VISIBLE
                     }
                 }
             }
@@ -119,7 +160,6 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         day
                     )
                 datePickerDialog.show()
-                // grpAddDevice.visibility=View.VISIBLE
             }
 
             cbRecurring.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -151,7 +191,10 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             triggerType = triggerType,
             dateTime = dateTime,
             isRecurring = isRecurring,
-            deviceList = ArrayListConverter().fromStringArrayListAreaWithDevice(selectedDeviceListForUI)
+            sensorDevice=sensorDevice,
+            deviceList = ArrayListConverter().fromStringArrayListAreaWithDevice(
+                selectedDeviceListForUI
+            )
         )
         RoomDb.getInstance(applicationContext).eventDao().insert(eventObj)
         onBackPressed();
@@ -172,7 +215,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
-        selectedDeviceListForUI[areaPos].isExpanded=isExpanded
+        selectedDeviceListForUI[areaPos].isExpanded = isExpanded
         areaAdapter.notifyDataSetChanged()
     }
 
@@ -238,7 +281,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             if (isDeviceSelected) {
                 selectedDeviceListForUI.clear()
                 selectedDeviceList.forEach {
-                    if (it.deviceList.size>0)
+                    if (it.deviceList.size > 0)
                         selectedDeviceListForUI.add(it)
                 }
                 areaAdapter.notifyDataSetChanged()
