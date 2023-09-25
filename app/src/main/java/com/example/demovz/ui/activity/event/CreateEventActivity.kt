@@ -36,9 +36,6 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     var binding: ActivityCreateEventBinding? = null
     lateinit var areaAdapter: AreaAdapter
 
-    var day = 0
-    var month: Int = 0
-    var year: Int = 0
     var hour: Int = 0
     var minute: Int = 0
     var myDay = 0
@@ -155,9 +152,9 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
 
             tvDateTime.setOnClickListener {
                 val calendar: Calendar = Calendar.getInstance()
-                day = calendar.get(Calendar.DAY_OF_MONTH)
-                month = calendar.get(Calendar.MONTH)
-                year = calendar.get(Calendar.YEAR)
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val month = calendar.get(Calendar.MONTH)
+                val year = calendar.get(Calendar.YEAR)
                 val datePickerDialog =
                     DatePickerDialog(
                         this@CreateEventActivity,
@@ -241,9 +238,9 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        myDay = day
+        myDay = dayOfMonth
         myYear = year
-        myMonth = month
+        myMonth = month +1
         val calendar: Calendar = Calendar.getInstance()
         hour = calendar.get(Calendar.HOUR)
         minute = calendar.get(Calendar.MINUTE)
