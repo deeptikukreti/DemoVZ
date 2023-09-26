@@ -1,9 +1,13 @@
 package com.example.demovz.ui.activity.event
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.demovz.R
 import com.example.demovz.adapter.addDevice.AreaAdapter
 import com.example.demovz.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.databinding.ActivityEventDetailBinding
@@ -12,6 +16,7 @@ import com.example.demovz.db.events.Device
 import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
 import com.example.demovz.util.ArrayListConverter
+
 
 class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener {
 
@@ -24,22 +29,23 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     var triggerType: Int = 0 //1=time base ,2=event based
     var dateTime: String = ""
     var isRecurring: Boolean = false
-    var sensorDevice=""
-    var id: Int? = 0
+    var sensorDevice = ""
+    var eventId: Int? = 0
     lateinit var data: Event
     var selectedDeviceList = ArrayList<AreaWithDeviceData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEventDetailBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        id = intent?.extras?.getInt("ID")
+        eventId = intent?.extras?.getInt("ID")
 
 
         binding?.appBar?.apply {
+            setSupportActionBar(toolbar)
             ivLogo.visibility = View.GONE
             backIcon.visibility = View.VISIBLE
-            editImg.visibility = View.VISIBLE
-            cancelImg.visibility = View.VISIBLE
+//            editImg.visibility = View.VISIBLE
+//            cancelImg.visibility = View.VISIBLE
             txtTitle?.text = "Event Detail"
 
             backIcon.setOnClickListener {
@@ -51,7 +57,7 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                     Intent(
                         this@EventDetailActivity,
                         EditEventActivity::class.java
-                    ).putExtra("ID", id)
+                    ).putExtra("ID", eventId)
                 )
             }
 
@@ -66,14 +72,14 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     private fun setData() {
-        data = RoomDb.getInstance(applicationContext).eventDao().getEvent(id!!)
+        data = RoomDb.getInstance(applicationContext).eventDao().getEvent(eventId!!)
         if (data != null) {
             binding?.apply {
                 eventName = data.eventName
                 triggerType = data.triggerType
                 dateTime = data.dateTime
                 isRecurring = data.isRecurring
-                sensorDevice=data.sensorDevice
+                sensorDevice = data.sensorDevice
                 txtEvntName.text = "Event/Scene Name : " + data.eventName
                 if (data.triggerType == 1) {
                     txtTriggerType.text = "Trigger Type : Time Based"
@@ -84,14 +90,21 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                     else
                         txtRecurring.text = "Event Type : One Time"
                 } else {
-                    txtTriggerType.text = "Trigger Type : Event Based"
-                    txtSensorDevice.visibility=View.VISIBLE
-                    txtSensorDevice.text="Sensor Device : ${data.sensorDevice}"
+                    txtTriggerType.text = "Trigger Type : Activity Based"
+                    txtSensorDevice.visibility = View.VISIBLE
+                    txtSensorDevice.text = "Sensor Device : ${data.sensorDevice}"
                 }
 
                 selectedDeviceList =
                     ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
-                areaAdapter = AreaAdapter(selectedDeviceList, true, this@EventDetailActivity).apply { this.setOnClickListener(this@EventDetailActivity) }
+                selectedDeviceList.forEach {
+                    it.isExpanded=true
+                }
+                areaAdapter = AreaAdapter(
+                    selectedDeviceList,
+                    true,
+                    this@EventDetailActivity
+                ).apply { this.setOnClickListener(this@EventDetailActivity) }
                 binding?.rvGrp?.adapter = areaAdapter
             }
         }
@@ -103,7 +116,7 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     override fun onClicked(s: String) {
-       // TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 
     override fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int) {
@@ -111,7 +124,7 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     override fun onDeviceRemoved(areaPos: Int, devicePos: Int) {
-       // TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 
     override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
@@ -119,5 +132,34 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         areaAdapter.notifyDataSetChanged()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.edit_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        return when (id) {
+            R.id.edit -> {
+                startActivity(
+                    Intent(
+                        this@EventDetailActivity,
+                        EditEventActivity::class.java
+                    ).putExtra("ID", eventId)
+                )
+                true
+            }
+
+            R.id.delete -> {
+                RoomDb.getInstance(applicationContext).eventDao().delete(event = data)
+                onBackPressed()
+                finish()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
 }

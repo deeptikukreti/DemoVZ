@@ -122,6 +122,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
 
                 val _selectedDeviceList = ArrayList<Device>()
                 selectedDeviceListForUI.forEach { it ->
+                    it.isExpanded=true
                     for (it1 in selectedDeviceList) {
                         if (it1.areaId == it.areaId) {
                             it1.deviceList.addAll(it.deviceList)
@@ -160,7 +161,8 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                 AreaWithDeviceData(
                     area.areaId,
                     area.areaName,
-                    ArrayList<Device>()
+                    ArrayList<Device>(),
+                    true
                 )
             )
             deviceList.forEach {

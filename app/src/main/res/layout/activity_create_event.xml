@@ -98,17 +98,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_trigger_type">
 
-                <RadioButton
+                <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_time_based"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    style="@style/radioButton"
                     android:text="Time Based" />
 
-                <RadioButton
+                <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_event_based"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:text="Event Based" />
+                    style="@style/radioButton"
+                    android:text="Activity Based" />
             </RadioGroup>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -155,7 +157,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/select_date_time" />
 
-                <CheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cb_recurring"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

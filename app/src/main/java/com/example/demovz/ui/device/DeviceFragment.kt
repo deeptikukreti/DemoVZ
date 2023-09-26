@@ -45,11 +45,12 @@ class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
                 AreaWithDeviceData(
                     area.areaId,
                     area.areaName,
-                    deviceList
+                    deviceList,
+                    false
                 )
             )
         }
-        areaAdapter = AreaAdapter(selectedDeviceList,false, activity!!).apply { this.setOnClickListener(this@DeviceFragment) }
+        areaAdapter = AreaAdapter(selectedDeviceList,false, requireActivity()).apply { this.setOnClickListener(this@DeviceFragment) }
         binding?.rvGrp?.adapter = areaAdapter
         return root
     }

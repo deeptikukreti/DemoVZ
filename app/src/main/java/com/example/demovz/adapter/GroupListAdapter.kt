@@ -32,7 +32,10 @@ class GroupListAdapter(
                 } else ""
             }
             with(groupList[position]) {
+                if(this.triggerType==1)
                 binding.groupDetails.text = "${this.dateTime} Recurring: ${this.isRecurring}"
+                else
+                binding.groupDetails.text = "Sensor Device : ${this.sensorDevice}"
 
                 binding.clGroup.setOnClickListener {
                     listener.onClicked(this)

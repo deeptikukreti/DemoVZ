@@ -3,6 +3,9 @@
     <style name="Base.Theme.DemoVZ" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:actionOverflowButtonStyle">@style/ThreeDotMenu</item>
+        <item name="android:checkboxStyle">@style/checkbox</item>
+        <item name="android:radioButtonStyle">@style/radioButton</item>
     </style>
 
     <style name="Theme.DemoVZ" parent="Base.Theme.DemoVZ" />
@@ -11,4 +14,13 @@
         <item name="android:windowBackground">@drawable/rectangle</item>
     </style>
 
+    <style name="ThreeDotMenu" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">#ffffff</item>
+    </style>
+    <style name="checkbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="tint">#000000</item>
+    </style>
+    <style name="radioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="tint">#000000</item>
+    </style>
 </resources>

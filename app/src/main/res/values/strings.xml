@@ -55,7 +55,7 @@
     <string name="save">Save</string>
     <string name="repeating_event">Repeating Event</string>
     <string name="time_based">Time Based</string>
-    <string name="event_based">Event Based</string>
+    <string name="event_based">Activity Based</string>
     <string name="select_date_time"><![CDATA[Select Date & Time]]></string>
     <string name="welcome_back_xyz">Welcome Back Mr XYZ</string>
     <string name="router_name">Router Name:</string>

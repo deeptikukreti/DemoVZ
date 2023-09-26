@@ -43,10 +43,12 @@ class AreaAdapter(
                         } else ""
                         if(this.isExpanded)
                         {
+                            rvDevices.visibility=View.VISIBLE
                             dropIcon.setImageDrawable(context.getDrawable(R.drawable.baseline_arrow_down))
                             dropIcon.rotation=180f
                         }
                         else{
+                            rvDevices.visibility=View.GONE
                             dropIcon.setImageDrawable(context.getDrawable(R.drawable.baseline_arrow_down))
                             dropIcon.rotation=0f
                         }

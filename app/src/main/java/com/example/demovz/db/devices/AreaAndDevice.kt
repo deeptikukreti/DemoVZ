@@ -15,7 +15,7 @@ data class Area(
 
 data class AreaWithDeviceData(
     val areaId: Int , val areaName :String ,
-    var deviceList: ArrayList<Device>,var isExpanded:Boolean=false)
+    var deviceList: ArrayList<Device>,var isExpanded:Boolean=true)
 
 data class SelectDeviceData(
     val areaId: Int , val areaName :String ,
