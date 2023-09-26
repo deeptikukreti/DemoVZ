@@ -8,12 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import com.example.demovz.R
 import com.example.demovz.ui.activity.event.CreateEventActivity
 import com.example.demovz.adapter.GroupListAdapter
 import com.example.demovz.databinding.FragmentGroupBinding
 import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
-import com.example.demovz.ui.activity.event.EditEventActivity
 import com.example.demovz.ui.activity.event.EventDetailActivity
 import com.example.demovz.ui.activity.event.EventListActivity
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +35,7 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
         viewModel = ViewModelProvider(this)[GroupViewModel::class.java]
         _binding = FragmentGroupBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.appBar.txtTitle.text = "Home"
+        binding.appBar.txtTitle.text = getString(R.string.home)
         grpAdapter = GroupListAdapter(groupList).apply { setOnClickListener(this@GroupFragment) }
         binding.rvGrp.adapter = grpAdapter
         binding.addBtn.setOnClickListener {

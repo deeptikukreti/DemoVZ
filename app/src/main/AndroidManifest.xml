@@ -17,7 +17,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.event.EventDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label=""/>
         <activity
             android:name=".ui.activity.SplashActivity"
             android:exported="true"
@@ -33,12 +34,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.event.CreateEventActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.DeviceDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.GroupDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.MainActivity"

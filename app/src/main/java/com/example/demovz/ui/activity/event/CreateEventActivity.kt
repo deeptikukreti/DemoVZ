@@ -88,7 +88,8 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             "Please Select Sensor Device: ",
             "Main Door Sensor",
             "Bedroom Door Sensor",
-            "Kitchen Door sensor"
+            "Kitchen Door sensor",
+            "Stairs Sensor"
         )
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
 

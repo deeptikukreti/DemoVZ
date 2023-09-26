@@ -1,18 +1,16 @@
 package com.example.demovz.ui.activity.event
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.demovz.R
 import com.example.demovz.adapter.addDevice.AreaAdapter
-import com.example.demovz.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.databinding.ActivityEventDetailBinding
 import com.example.demovz.db.devices.AreaWithDeviceData
-import com.example.demovz.db.events.Device
 import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
 import com.example.demovz.util.ArrayListConverter
@@ -21,18 +19,16 @@ import com.example.demovz.util.ArrayListConverter
 class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener {
 
     var binding: ActivityEventDetailBinding? = null
-    lateinit var areaAdapter: AreaAdapter
-    var deviceList = ArrayList<Device>()
-    lateinit var deviceAdapter: DevicesListAdapter
+    private lateinit var areaAdapter: AreaAdapter
 
-    var eventName: String = ""
-    var triggerType: Int = 0 //1=time base ,2=event based
-    var dateTime: String = ""
-    var isRecurring: Boolean = false
-    var sensorDevice = ""
-    var eventId: Int? = 0
-    lateinit var data: Event
-    var selectedDeviceList = ArrayList<AreaWithDeviceData>()
+    private var eventName: String = ""
+    private var triggerType: Int = 0 //1=time base ,2=event based
+    private var dateTime: String = ""
+    private var isRecurring: Boolean = false
+    private var sensorDevice = ""
+    private var eventId: Int? = 0
+    private lateinit var data: Event
+    private var selectedDeviceList = ArrayList<AreaWithDeviceData>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEventDetailBinding.inflate(layoutInflater)
@@ -46,7 +42,8 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             backIcon.visibility = View.VISIBLE
 //            editImg.visibility = View.VISIBLE
 //            cancelImg.visibility = View.VISIBLE
-            txtTitle?.text = "Event Detail"
+            txtTitle.text = getString(R.string.event_details)
+            this.toolbar.title = ""
 
             backIcon.setOnClickListener {
                 onBackPressed()
@@ -71,6 +68,7 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setData() {
         data = RoomDb.getInstance(applicationContext).eventDao().getEvent(eventId!!)
         if (data != null) {
@@ -127,6 +125,7 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         // TODO("Not yet implemented")
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
         selectedDeviceList[areaPos].isExpanded = isExpanded
         areaAdapter.notifyDataSetChanged()
@@ -139,8 +138,7 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        return when (id) {
+        return when (item.itemId) {
             R.id.edit -> {
                 startActivity(
                     Intent(

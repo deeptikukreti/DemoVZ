@@ -61,7 +61,8 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
         "Please Select Sensor Device: ",
         "Main Door Sensor",
         "Bedroom Door Sensor",
-        "Kitchen Door sensor"
+        "Kitchen Door sensor",
+        "Stairs Sensor"
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

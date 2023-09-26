@@ -57,7 +57,7 @@
     <string name="time_based">Time Based</string>
     <string name="event_based">Activity Based</string>
     <string name="select_date_time"><![CDATA[Select Date & Time]]></string>
-    <string name="welcome_back_xyz">Welcome Back Mr XYZ</string>
+    <string name="welcome_back_xyz">Welcome Back John</string>
     <string name="router_name">Router Name:</string>
     <string name="router_details">Router Details</string>
     <string name="conn_devices">Conn Devices:</string>
@@ -70,4 +70,6 @@
     <string name="events_list">My Events List</string>
     <string name="verizon">Verizon</string>
     <string name="brand">Brand:</string>
+    <string name="event_details">Event Details</string>
+    <string name="home">Home</string>
 </resources>
