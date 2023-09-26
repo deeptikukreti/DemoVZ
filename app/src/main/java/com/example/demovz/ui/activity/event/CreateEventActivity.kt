@@ -26,6 +26,7 @@ import com.example.demovz.db.devices.SelectDeviceData
 import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
 import com.example.demovz.util.ArrayListConverter
+import com.example.demovz.util.CommonUtils
 import java.util.Calendar
 
 
@@ -144,6 +145,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         triggerType = 2
                         isRecurring=false
                         dateTime=""
+                        endDateTime=""
                         tvDateTime.text=""
                         grpSelectDateTime.visibility = View.GONE
                         grpSelectEventType.visibility = View.VISIBLE
@@ -207,6 +209,20 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         Toast.LENGTH_LONG
                     ).show()
                 }
+                else if (triggerType==1 && endDateTime.isEmpty()) {
+                    Toast.makeText(
+                        this@CreateEventActivity,
+                        "Please select end date and time",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                else if (triggerType==1 && !CommonUtils.isDateAfter(dateTime, endDateTime)) {
+                    Toast.makeText(
+                        this@CreateEventActivity,
+                        "Please select Correct Date time, end date and time can't before to start data",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
                 else if (triggerType==2 && sensorDevice.isEmpty()) {
                     Toast.makeText(
                         this@CreateEventActivity,
@@ -226,7 +242,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         val eventObj = Event(
             eventName = eventName,
             triggerType = triggerType,
-            dateTime = dateTime,
+            dateTime = "$dateTime to $endDateTime",
             isRecurring = isRecurring,
             sensorDevice=sensorDevice,
             deviceList = ArrayListConverter().fromStringArrayListAreaWithDevice(

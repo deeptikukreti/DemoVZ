@@ -33,7 +33,7 @@ class GroupListAdapter(
             }
             with(groupList[position]) {
                 if(this.triggerType==1)
-                binding.groupDetails.text = "${this.dateTime} Recurring: ${this.isRecurring}"
+                binding.groupDetails.text = "${this.dateTime} \nRecurring: ${this.isRecurring}"
                 else
                 binding.groupDetails.text = "Sensor Device : ${this.sensorDevice}"
 

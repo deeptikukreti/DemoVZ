@@ -62,27 +62,6 @@
             app:layout_constraintTop_toBottomOf="@+id/group_name"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:visibility="gone"
-            android:id="@+id/edit_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/cancel_img"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_edit_24" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:visibility="gone"
-            android:id="@+id/cancel_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_cancel_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
