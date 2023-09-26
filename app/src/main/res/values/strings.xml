@@ -72,4 +72,5 @@
     <string name="brand">Brand:</string>
     <string name="event_details">Event Details</string>
     <string name="home">Home</string>
+    <string name="create_event">Create Event</string>
 </resources>

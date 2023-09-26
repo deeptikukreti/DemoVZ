@@ -3,7 +3,6 @@ package com.example.demovz.ui.activity.event
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -24,7 +23,6 @@ import com.example.demovz.db.devices.Area
 import com.example.demovz.db.devices.AreaWithDeviceData
 import com.example.demovz.db.devices.DevicesRoomDb
 import com.example.demovz.db.devices.SelectDeviceData
-import com.example.demovz.db.events.Device
 import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
 import com.example.demovz.util.ArrayListConverter
@@ -34,23 +32,25 @@ import java.util.Calendar
 class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     var binding: ActivityCreateEventBinding? = null
-    lateinit var areaAdapter: AreaAdapter
+    private lateinit var areaAdapter: AreaAdapter
 
-    var hour: Int = 0
-    var minute: Int = 0
-    var myDay = 0
-    var myMonth: Int = 0
-    var myYear: Int = 0
-    var myHour: Int = 0
-    var myMinute: Int = 0
+    private var hour: Int = 0
+    private var minute: Int = 0
+    private var myDay = 0
+    private var myMonth: Int = 0
+    private var myYear: Int = 0
+    private var myHour: Int = 0
+    private var myMinute: Int = 0
+    private var dateTimeSelectionType: Int = 0 //1=start date time, 2=end date time
 
-    var eventName: String = ""
-    var triggerType: Int = 0 //1=time base ,2=event based
-    var dateTime: String = ""
-    var isRecurring: Boolean = false
+    private var eventName: String = ""
+    private var triggerType: Int = 0 //1=time base ,2=event based
+    private var dateTime: String = ""
+    private var endDateTime: String = ""
+    private var isRecurring: Boolean = false
     var sensorDevice=""
 
-    var areaDeviceList = ArrayList<Area>()
+    private var areaDeviceList = ArrayList<Area>()
     private var selectedDeviceList = ArrayList<AreaWithDeviceData>()
     private var selectedDeviceListForUI = ArrayList<AreaWithDeviceData>()
     private var selectDeviceList = ArrayList<SelectDeviceData>()
@@ -72,7 +72,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                 AreaWithDeviceData(
                     area.areaId,
                     area.areaName,
-                    ArrayList<Device>()
+                    ArrayList()
                 )
             )
             deviceList.forEach {
@@ -116,7 +116,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         binding?.appBar?.apply {
             ivLogo.visibility = View.GONE
             backIcon.visibility = View.VISIBLE
-            txtTitle?.text = "Create Event"
+            txtTitle.text = getString(R.string.create_event)
 
             backIcon.setOnClickListener {
                 onBackPressed()
@@ -130,7 +130,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         binding?.rvGrp?.adapter = areaAdapter
         binding?.apply {
 
-            rgTriggerType.setOnCheckedChangeListener { radioGroup, i ->
+            rgTriggerType.setOnCheckedChangeListener { _, i ->
                 when (i) {
                     R.id.rb_time_based -> {
                         sensorDevice=""
@@ -165,9 +165,27 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         day
                     )
                 datePickerDialog.show()
+                dateTimeSelectionType = 1
             }
 
-            cbRecurring.setOnCheckedChangeListener { buttonView, isChecked ->
+            tvToDateTime.setOnClickListener {
+                val calendar: Calendar = Calendar.getInstance()
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val month = calendar.get(Calendar.MONTH)
+                val year = calendar.get(Calendar.YEAR)
+                val datePickerDialog =
+                    DatePickerDialog(
+                        this@CreateEventActivity,
+                        this@CreateEventActivity,
+                        year,
+                        month,
+                        day
+                    )
+                datePickerDialog.show()
+                dateTimeSelectionType = 2
+            }
+
+            cbRecurring.setOnCheckedChangeListener { _, isChecked ->
                 isRecurring = isChecked
             }
             txtAddDevices.setOnClickListener {
@@ -216,23 +234,25 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             )
         )
         RoomDb.getInstance(applicationContext).eventDao().insert(eventObj)
-        onBackPressed();
+        onBackPressed()
         finish()
     }
 
     override fun onClicked(s: String) {
-        TODO("Not yet implemented")
+        //"Not yet implemented"
     }
 
     override fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int) {
         selectedDeviceListForUI[areaPos].deviceList[devicePos].action = action
     }
 
-    override fun onDeviceRemoved(areaPos: Int, position: Int) {
-        selectedDeviceListForUI[areaPos].deviceList.removeAt(position)
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onDeviceRemoved(areaPos: Int, devicePos: Int) {
+        selectedDeviceListForUI[areaPos].deviceList.removeAt(devicePos)
         areaAdapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
         selectedDeviceListForUI[areaPos].isExpanded = isExpanded
         areaAdapter.notifyDataSetChanged()
@@ -250,12 +270,21 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         timePickerDialog.show()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         myHour = hourOfDay
         myMinute = minute
-        binding?.tvDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
-        dateTime = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
-        binding?.grpAddDevice?.visibility = View.VISIBLE
+        when(dateTimeSelectionType){
+            1->{
+                binding?.tvDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+                dateTime = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+            }
+            2->{
+                binding?.tvToDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+                endDateTime = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+                binding?.grpAddDevice?.visibility = View.VISIBLE
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged", "MissingInflatedId")
@@ -272,13 +301,13 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             SelectDevicesListAdapter.OnItemClickListener {
             override fun onClicked(i: SelectDeviceData, isChecked: Boolean, position: Int) {
                 if (isChecked) {
-                    selectDeviceList.get(position).device.isSelected = true
+                    selectDeviceList[position].device.isSelected = true
                     selectedDeviceList.forEach {
                         if (it.areaId == i.areaId)
                             it.deviceList.add(i.device)
                     }
                 } else {
-                    selectDeviceList.get(position).device.isSelected = false
+                    selectDeviceList[position].device.isSelected = false
                     selectedDeviceList.forEach {
                         if (it.areaId == i.areaId)
                             it.deviceList.remove(i.device)

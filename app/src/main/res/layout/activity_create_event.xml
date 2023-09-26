@@ -100,16 +100,16 @@
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_time_based"
+                    style="@style/radioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    style="@style/radioButton"
                     android:text="Time Based" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_event_based"
+                    style="@style/radioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    style="@style/radioButton"
                     android:text="Activity Based" />
             </RadioGroup>
 
@@ -126,14 +126,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="select_date_time,tvDateTime,cb_recurring" />
+                    app:constraint_referenced_ids="select_date_time,tvDateTime,select_to_date_time,tvToDateTime,cb_recurring" />
 
                 <TextView
                     android:id="@+id/select_date_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:text="Select Date &amp; Time"
+                    android:text="Select Start Date &amp; Time"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -147,15 +147,44 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/rectangle"
-                    android:drawableEnd="@drawable/baseline_calendar"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="10dp"
-                    android:text="Select Date &amp; Time"
+                    android:text="Select Start Date &amp; Time"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/select_date_time" />
+                    app:layout_constraintTop_toBottomOf="@id/select_date_time"
+                    app:drawableEndCompat="@drawable/baseline_calendar" />
+
+                <TextView
+                    android:id="@+id/select_to_date_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="Select End Date &amp; Time"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvDateTime" />
+
+                <TextView
+                    android:id="@+id/tvToDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/rectangle"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="10dp"
+                    android:text="Select End Date &amp; Time"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/select_to_date_time"
+                    app:drawableEndCompat="@drawable/baseline_calendar" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cb_recurring"
@@ -168,7 +197,7 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvDateTime" />
+                    app:layout_constraintTop_toBottomOf="@id/tvToDateTime" />
                 <!--____________add sensor device group event based task_________________________________________-->
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/grpSelectEventType"
