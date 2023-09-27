@@ -5,8 +5,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -19,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.R
 import com.example.demovz.adapter.addDevice.AreaAdapter
-import com.example.demovz.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.adapter.addDevice.SelectDevicesListAdapter
 import com.example.demovz.databinding.ActivityEditEventBinding
 import com.example.demovz.db.devices.Area
@@ -30,29 +27,32 @@ import com.example.demovz.db.events.Device
 import com.example.demovz.db.events.Event
 import com.example.demovz.db.events.RoomDb
 import com.example.demovz.util.ArrayListConverter
+import com.example.demovz.util.CommonUtils
 import java.util.Calendar
 
 class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     var binding: ActivityEditEventBinding? = null
-    lateinit var areaAdapter: AreaAdapter
+    private lateinit var areaAdapter: AreaAdapter
 
-    var hour: Int = 0
-    var minute: Int = 0
-    var myDay = 0
-    var myMonth: Int = 0
-    var myYear: Int = 0
-    var myHour: Int = 0
-    var myMinute: Int = 0
+    private var hour: Int = 0
+    private var minute: Int = 0
+    private var myDay = 0
+    private var myMonth: Int = 0
+    private var myYear: Int = 0
+    private var myHour: Int = 0
+    private var myMinute: Int = 0
+    private var dateTimeSelectionType: Int = 0 //1=start date time, 2=end date time
 
-    var eventName: String = ""
-    var triggerType: Int = 0 //1=time base ,2=event based
-    var dateTime: String = ""
-    var isRecurring: Boolean = false
+    private var eventName: String = ""
+    private var triggerType: Int = 0 //1=time base ,2=event based
+    private var dateTime: String = ""
+    private var endDateTime: String = ""
+    private var isRecurring: Boolean = false
     var sensorDevice=""
     var id: Int? = 0
 
-    var areaDeviceList = ArrayList<Area>()
+    private var areaDeviceList = ArrayList<Area>()
     private var selectedDeviceList = ArrayList<AreaWithDeviceData>()
     private var selectedDeviceListForUI = ArrayList<AreaWithDeviceData>()
     private var selectDeviceList = ArrayList<SelectDeviceData>()
@@ -100,7 +100,13 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
             binding?.apply {
                 eventName = data.eventName
                 triggerType = data.triggerType
-                dateTime = data.dateTime
+                val bothDate = data.dateTime.split("to")
+                if (bothDate.isNotEmpty()) {
+                    dateTime = bothDate[0]
+                }
+                if (bothDate.size>1) {
+                    endDateTime = bothDate[1]
+                }
                 isRecurring = data.isRecurring
                 sensorDevice = data.sensorDevice
                 edtEventName.setText(data.eventName)
@@ -108,7 +114,8 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                     rbTimeBased.isChecked = true
                     grpSelectDateTime.visibility = View.VISIBLE
                     grpAddDevice.visibility = View.VISIBLE
-                    tvDateTime.text = data.dateTime
+                    tvDateTime.text = dateTime
+                    tvToDateTime.text = endDateTime
                     cbRecurring.isChecked = data.isRecurring
                 } else
                 {
@@ -121,20 +128,20 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                 selectedDeviceListForUI =
                     ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
 
-                val _selectedDeviceList = ArrayList<Device>()
-                selectedDeviceListForUI.forEach { it ->
+                val selectedDeviceList = ArrayList<Device>()
+                selectedDeviceListForUI.forEach {
                     it.isExpanded=true
-                    for (it1 in selectedDeviceList) {
+                    for (it1 in this@EditEventActivity.selectedDeviceList) {
                         if (it1.areaId == it.areaId) {
                             it1.deviceList.addAll(it.deviceList)
-                            _selectedDeviceList.addAll(it.deviceList)
+                            selectedDeviceList.addAll(it.deviceList)
                             break
                         }
                     }
                 }
 
                 selectDeviceList.forEach { it1 ->
-                    for (it2 in _selectedDeviceList) {
+                    for (it2 in selectedDeviceList) {
                         if (it1.device.deviceName == it2.deviceName) {
                             it1.device.isSelected = true
                             break
@@ -162,7 +169,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                 AreaWithDeviceData(
                     area.areaId,
                     area.areaName,
-                    ArrayList<Device>(),
+                    ArrayList(),
                     true
                 )
             )
@@ -177,7 +184,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
         binding?.appBar?.apply {
             ivLogo.visibility = View.GONE
             backIcon.visibility = View.VISIBLE
-            txtTitle?.text = "Edit Event"
+            txtTitle.text = getString(R.string.edit_event)
             backIcon.visibility = View.VISIBLE
             editImg.visibility = View.GONE
             cancelImg.visibility = View.GONE
@@ -187,7 +194,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
         }
         binding?.apply {
 
-            rgTriggerType.setOnCheckedChangeListener { radioGroup, i ->
+            rgTriggerType.setOnCheckedChangeListener { _, i ->
                     when (i) {
                         R.id.rb_time_based -> {
                             sensorDevice=""
@@ -201,7 +208,9 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                             triggerType = 2
                             isRecurring=false
                             dateTime=""
+                            endDateTime = ""
                             tvDateTime.text=""
+                            tvToDateTime.text = ""
                             grpSelectDateTime.visibility = View.GONE
                             grpSelectEventType.visibility = View.VISIBLE
                         }
@@ -221,11 +230,30 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                         month,
                         day
                     )
+                datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
                 datePickerDialog.show()
-                // grpAddDevice.visibility=View.VISIBLE
+                dateTimeSelectionType = 1
             }
 
-            cbRecurring.setOnCheckedChangeListener { buttonView, isChecked ->
+            tvToDateTime.setOnClickListener {
+                val calendar: Calendar = Calendar.getInstance()
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val month = calendar.get(Calendar.MONTH)
+                val year = calendar.get(Calendar.YEAR)
+                val datePickerDialog =
+                    DatePickerDialog(
+                        this@EditEventActivity,
+                        this@EditEventActivity,
+                        year,
+                        month,
+                        day
+                    )
+                datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+                datePickerDialog.show()
+                dateTimeSelectionType = 2
+            }
+
+            cbRecurring.setOnCheckedChangeListener { _, isChecked ->
                 isRecurring = isChecked
             }
             txtAddDevices.setOnClickListener {
@@ -244,6 +272,18 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                     Toast.makeText(
                         this@EditEventActivity,
                         "Please select date and time",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }else if (triggerType == 1 && endDateTime.isEmpty()) {
+                    Toast.makeText(
+                        this@EditEventActivity,
+                        "Please select end date and time",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else if (triggerType == 1 && !CommonUtils.isDateAfter(dateTime, endDateTime)) {
+                    Toast.makeText(
+                        this@EditEventActivity,
+                        "Please select Correct Date time, end date and time can't before to start data",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -266,7 +306,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
             id = id,
             eventName = eventName,
             triggerType = triggerType,
-            dateTime = dateTime,
+            dateTime = "$dateTime to $endDateTime",
             isRecurring = isRecurring,
             sensorDevice=sensorDevice,
             deviceList = ArrayListConverter().fromStringArrayListAreaWithDevice(
@@ -274,7 +314,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
             )
         )
         RoomDb.getInstance(applicationContext).eventDao().update(eventObj)
-        onBackPressed();
+        onBackPressed()
         finish()
     }
 
@@ -286,11 +326,13 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
         selectedDeviceListForUI[areaPos].deviceList[devicePos].action = action
     }
 
-    override fun onDeviceRemoved(areaPos: Int, position: Int) {
-        selectedDeviceListForUI[areaPos].deviceList.removeAt(position)
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onDeviceRemoved(areaPos: Int, devicePos: Int) {
+        selectedDeviceListForUI[areaPos].deviceList.removeAt(devicePos)
         areaAdapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
         selectedDeviceListForUI[areaPos].isExpanded=isExpanded
         areaAdapter.notifyDataSetChanged()
@@ -308,12 +350,22 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
         timePickerDialog.show()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         myHour = hourOfDay
         myMinute = minute
-        binding?.tvDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
-        dateTime = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
-        binding?.grpAddDevice?.visibility = View.VISIBLE
+        when (dateTimeSelectionType) {
+            1 -> {
+                binding?.tvDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+                dateTime = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+            }
+
+            2 -> {
+                binding?.tvToDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+                endDateTime = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
+                binding?.grpAddDevice?.visibility = View.VISIBLE
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged", "MissingInflatedId")
@@ -330,13 +382,13 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
             SelectDevicesListAdapter.OnItemClickListener {
             override fun onClicked(i: SelectDeviceData, isChecked: Boolean, position: Int) {
                 if (isChecked) {
-                    selectDeviceList.get(position).device.isSelected = true
+                    selectDeviceList[position].device.isSelected = true
                     selectedDeviceList.forEach {
                         if (it.areaId == i.areaId)
                             it.deviceList.add(i.device)
                     }
                 } else {
-                    selectDeviceList.get(position).device.isSelected = false
+                    selectDeviceList[position].device.isSelected = false
                     selectedDeviceList.forEach {
                         if (it.areaId == i.areaId)
                             it.deviceList.remove(i.device)

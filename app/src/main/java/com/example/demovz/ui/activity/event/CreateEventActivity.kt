@@ -49,7 +49,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     private var dateTime: String = ""
     private var endDateTime: String = ""
     private var isRecurring: Boolean = false
-    var sensorDevice=""
+    var sensorDevice = ""
 
     private var areaDeviceList = ArrayList<Area>()
     private var selectedDeviceList = ArrayList<AreaWithDeviceData>()
@@ -100,12 +100,17 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                 // You can define your actions as you want
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                p1: View?,
+                position: Int,
+                p3: Long
+            ) {
                 if (position == 0) {
                     (parent?.getChildAt(position) as TextView).setTextColor(getColor(R.color.colorGrey))
                 } else {
-                    sensorDevice=list[position]
-                    binding?.grpAddDevice?.visibility=View.VISIBLE
+                    sensorDevice = list[position]
+                    binding?.grpAddDevice?.visibility = View.VISIBLE
                 }
             }
         }
@@ -134,7 +139,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             rgTriggerType.setOnCheckedChangeListener { _, i ->
                 when (i) {
                     R.id.rb_time_based -> {
-                        sensorDevice=""
+                        sensorDevice = ""
                         triggerType = 1
                         binding?.spinner?.setSelection(0)
                         grpSelectDateTime.visibility = View.VISIBLE
@@ -143,10 +148,11 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
 
                     R.id.rb_event_based -> {
                         triggerType = 2
-                        isRecurring=false
-                        dateTime=""
-                        endDateTime=""
-                        tvDateTime.text=""
+                        isRecurring = false
+                        dateTime = ""
+                        endDateTime = ""
+                        tvDateTime.text = ""
+                        tvToDateTime.text = ""
                         grpSelectDateTime.visibility = View.GONE
                         grpSelectEventType.visibility = View.VISIBLE
                     }
@@ -166,6 +172,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         month,
                         day
                     )
+                datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
                 datePickerDialog.show()
                 dateTimeSelectionType = 1
             }
@@ -183,6 +190,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         month,
                         day
                     )
+                datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
                 datePickerDialog.show()
                 dateTimeSelectionType = 2
             }
@@ -201,35 +209,31 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         "Please enter event name",
                         Toast.LENGTH_LONG
                     ).show()
-                }
-                else if (triggerType==1 && dateTime.isEmpty()) {
+                } else if (triggerType == 1 && dateTime.isEmpty()) {
                     Toast.makeText(
                         this@CreateEventActivity,
                         "Please select date and time",
                         Toast.LENGTH_LONG
                     ).show()
-                }
-                else if (triggerType==1 && endDateTime.isEmpty()) {
+                } else if (triggerType == 1 && endDateTime.isEmpty()) {
                     Toast.makeText(
                         this@CreateEventActivity,
                         "Please select end date and time",
                         Toast.LENGTH_LONG
                     ).show()
-                }
-                else if (triggerType==1 && !CommonUtils.isDateAfter(dateTime, endDateTime)) {
+                } else if (triggerType == 1 && !CommonUtils.isDateAfter(dateTime, endDateTime)) {
                     Toast.makeText(
                         this@CreateEventActivity,
                         "Please select Correct Date time, end date and time can't before to start data",
                         Toast.LENGTH_LONG
                     ).show()
-                }
-                else if (triggerType==2 && sensorDevice.isEmpty()) {
+                } else if (triggerType == 2 && sensorDevice.isEmpty()) {
                     Toast.makeText(
                         this@CreateEventActivity,
                         "Please select sensor device type",
                         Toast.LENGTH_LONG
                     ).show()
-                }else {
+                } else {
                     eventName = edtEventName.text.toString()
                     saveEventDetails()
                 }
@@ -244,7 +248,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             triggerType = triggerType,
             dateTime = "$dateTime to $endDateTime",
             isRecurring = isRecurring,
-            sensorDevice=sensorDevice,
+            sensorDevice = sensorDevice,
             deviceList = ArrayListConverter().fromStringArrayListAreaWithDevice(
                 selectedDeviceListForUI
             )
@@ -277,7 +281,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         myDay = dayOfMonth
         myYear = year
-        myMonth = month +1
+        myMonth = month + 1
         val calendar: Calendar = Calendar.getInstance()
         hour = calendar.get(Calendar.HOUR)
         minute = calendar.get(Calendar.MINUTE)
@@ -290,12 +294,13 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         myHour = hourOfDay
         myMinute = minute
-        when(dateTimeSelectionType){
-            1->{
+        when (dateTimeSelectionType) {
+            1 -> {
                 binding?.tvDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
                 dateTime = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
             }
-            2->{
+
+            2 -> {
                 binding?.tvToDateTime?.text = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
                 endDateTime = "$myDay-$myMonth-$myYear, $myHour:$myMinute"
                 binding?.grpAddDevice?.visibility = View.VISIBLE
