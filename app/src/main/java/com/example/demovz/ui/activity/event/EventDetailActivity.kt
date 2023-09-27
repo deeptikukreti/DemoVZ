@@ -113,10 +113,6 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
         setData()
     }
 
-    override fun onClicked(s: String) {
-        // TODO("Not yet implemented")
-    }
-
     override fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int) {
         //TODO("Not yet implemented")
     }
