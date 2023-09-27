@@ -54,10 +54,6 @@ class DevicesListAdapter(
                         txtDeviceName.text = this.deviceName
                         toggleBtn.isChecked = this.action
 
-                        txtDeviceName.setOnClickListener {
-                            listener.onClicked(this.deviceName)
-                        }
-
                         if (isEventDetail) {
                             cancelImg.visibility = View.GONE
                             toggleBtn.isClickable = false
@@ -93,7 +89,6 @@ class DevicesListAdapter(
     }
 
     interface OnItemClickListener {
-        fun onClicked(s: String)
         fun onToggleClicked(s: String, action: Boolean, position: Int)
         fun onDeviceRemoved(position: Int)
     }

@@ -55,10 +55,6 @@ class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
         return root
     }
 
-    override fun onClicked(s: String) {
-        TODO("Not yet implemented")
-    }
-
     override fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int) {
         selectedDeviceList[areaPos].deviceList[devicePos].action = action
     }

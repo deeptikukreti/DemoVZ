@@ -21,9 +21,11 @@ data class Event(
     @ColumnInfo(name = "sensor_device")
     val sensorDevice: String,
     @ColumnInfo(name = "device_list")
-    val deviceList: String
+    val deviceList: String,
+    @ColumnInfo(name = "select_device_list")
+    val selectDeviceList: String
 
 )
 
-data class Device(val deviceName: String, var action: Boolean,var isSelected:Boolean=false)
+data class Device(val deviceName: String, var action: Boolean, var isSelected: Boolean = false)
 

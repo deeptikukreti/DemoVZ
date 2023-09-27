@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.SelectDeviceItemLayoutBinding
-import com.example.demovz.db.devices.SelectDeviceData
+import com.example.demovz.db.events.Device
 
 class SelectDevicesListAdapter(
 ) : RecyclerView.Adapter<SelectDevicesListAdapter.ViewHolder>() {
-    private var devicesList = ArrayList<SelectDeviceData>()
+    private var devicesList = ArrayList<Device>()
 
     inner class ViewHolder(val binding: SelectDeviceItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -26,11 +26,11 @@ class SelectDevicesListAdapter(
         with(holder) {
             binding.apply {
                 with(devicesList[position]) {
-                    txtDeviceName.text = "${this.device.deviceName} \n Area : ${this.areaName}"
-                    cbSelectDevice.isChecked = this.device.isSelected
+                    txtDeviceName.text = "${this.deviceName}"
+                    cbSelectDevice.isChecked = this.isSelected
 
                     cbSelectDevice.setOnClickListener {
-                        devicesList[adapterPosition].device.isSelected=cbSelectDevice.isChecked
+                        devicesList[adapterPosition].isSelected=cbSelectDevice.isChecked
                         listener.onClicked(devicesList[adapterPosition], cbSelectDevice.isChecked, adapterPosition)
                     }
 //                    cbSelectDevice.setOnCheckedChangeListener { _, isChecked ->
@@ -43,7 +43,7 @@ class SelectDevicesListAdapter(
 
     }
 
-    fun addList(list: ArrayList<SelectDeviceData>) {
+    fun addList(list: ArrayList<Device>) {
         devicesList.clear()
         devicesList.addAll(list)
 
@@ -60,7 +60,7 @@ class SelectDevicesListAdapter(
     }
 
     interface OnItemClickListener {
-        fun onClicked(i: SelectDeviceData, isChecked: Boolean, position: Int)
+        fun onClicked(i: Device, isChecked: Boolean, position: Int)
     }
 
 }

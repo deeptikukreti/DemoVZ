@@ -11,11 +11,10 @@ import com.example.demovz.databinding.AreaItemLayoutBinding
 import com.example.demovz.db.devices.AreaWithDeviceData
 import com.example.demovz.db.events.Device
 
-class AreaAdapter(
+class AddDeviceAdapter(
     private var areaList: ArrayList<AreaWithDeviceData>,
-    val isEventDetail: Boolean,
     val context:Context
-) : RecyclerView.Adapter<AreaAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<AddDeviceAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: AreaItemLayoutBinding) :
@@ -54,7 +53,7 @@ class AreaAdapter(
                             dropIcon.rotation=0f
                         }
 
-                       deviceListAdapter(rvDevices,adapterPosition,this.deviceList)
+                       selectedDeviceList(rvDevices,adapterPosition,this)
 
                         dropIcon.setOnClickListener {
                             if(this.isExpanded)
@@ -74,25 +73,22 @@ class AreaAdapter(
         }
     }
 
-    private fun deviceListAdapter(rvDevices:RecyclerView,adapterPosition:Int,deviceList:ArrayList<Device>){
-        val deviceAdapter = DevicesListAdapter(deviceList, isEventDetail)
+    private fun selectedDeviceList(
+        rvDevices:RecyclerView,
+        adapterPosition:Int,
+        selectDeviceList: AreaWithDeviceData
+    ){
+        val deviceAdapter = SelectDevicesListAdapter()
         deviceAdapter.setOnClickListener(object :
-            DevicesListAdapter.OnItemClickListener {
-
-            override fun onToggleClicked(s: String, action: Boolean, pos: Int) {
-                deviceList[pos].action = action
-                listener.onToggleClicked(adapterPosition, s, action, pos)
-            }
-
-            override fun onDeviceRemoved(pos: Int) {
-                listener.onDeviceRemoved(adapterPosition, pos)
+            SelectDevicesListAdapter.OnItemClickListener {
+            override fun onClicked(i: Device, isChecked: Boolean, position: Int) {
+                listener.onClicked(adapterPosition,i,isChecked,position)
             }
 
         })
+        deviceAdapter.addList(selectDeviceList.deviceList)
         rvDevices.adapter = deviceAdapter
     }
-
-
     override fun getItemCount(): Int {
         return areaList.size
     }
@@ -103,8 +99,7 @@ class AreaAdapter(
     }
 
     interface OnItemClickListener {
-        fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int)
-        fun onDeviceRemoved(areaPos: Int, devicePos: Int)
+        fun onClicked(areaPos:Int,i: Device, isChecked: Boolean, devicePos: Int)
         fun onExpanded(areaPos: Int, isExpanded: Boolean)
 
     }
