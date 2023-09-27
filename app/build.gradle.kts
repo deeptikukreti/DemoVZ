@@ -1,8 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("io.realm.kotlin")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -60,5 +61,10 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.8")
     annotationProcessor("androidx.room:room-compiler:2.2.4")
     implementation("com.google.code.gson:gson:2.8.8")
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
 
+}
+kapt {
+    correctErrorTypes = true
 }
