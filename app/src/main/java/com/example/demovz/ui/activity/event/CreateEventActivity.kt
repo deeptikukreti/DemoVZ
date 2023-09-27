@@ -94,17 +94,12 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                 // You can define your actions as you want
             }
 
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                p1: View?,
-                position: Int,
-                p3: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 if (position == 0) {
                     (parent?.getChildAt(position) as TextView).setTextColor(getColor(R.color.colorGrey))
                 } else {
-                    sensorDevice = list[position]
-                    binding?.grpAddDevice?.visibility = View.VISIBLE
+                    sensorDevice=list[position]
+                    binding?.grpAddDevice?.visibility=View.VISIBLE
                 }
             }
         }
@@ -133,7 +128,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             rgTriggerType.setOnCheckedChangeListener { _, i ->
                 when (i) {
                     R.id.rb_time_based -> {
-                        sensorDevice = ""
+                        sensorDevice=""
                         triggerType = 1
                         binding?.spinner?.setSelection(0)
                         grpSelectDateTime.visibility = View.VISIBLE
@@ -146,6 +141,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         dateTime = ""
                         endDateTime = ""
                         tvDateTime.text = ""
+                        tvToDateTime.text = ""
                         grpSelectDateTime.visibility = View.GONE
                         grpSelectEventType.visibility = View.VISIBLE
                     }
@@ -165,6 +161,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         month,
                         day
                     )
+                datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
                 datePickerDialog.show()
                 dateTimeSelectionType = 1
             }
@@ -182,6 +179,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         month,
                         day
                     )
+                datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
                 datePickerDialog.show()
                 dateTimeSelectionType = 2
             }
