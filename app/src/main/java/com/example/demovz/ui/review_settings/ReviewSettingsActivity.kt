@@ -17,5 +17,7 @@ class ReviewSettingsActivity : AppCompatActivity() {
             appBar.txtTitle.text= getString(R.string.review_settings)
         }
 
+
+
     }
 }
