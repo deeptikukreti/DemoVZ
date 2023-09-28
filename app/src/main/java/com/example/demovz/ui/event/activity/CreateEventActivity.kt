@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.R
 import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
@@ -68,8 +67,8 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     private fun getDeviceData() {
-        deviceViewModel.getDevices().observe(this, Observer {
-            it.forEach {area->
+        deviceViewModel.getDevices().observe(this) {
+            it.forEach { area ->
                 val deviceList = ArrayListConverter().toStringArrayList(area.deviceList)
                 selectDeviceList.add(
                     AreaWithDeviceData(
@@ -80,7 +79,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                     )
                 )
             }
-        })
+        }
     }
 
     private fun setSpinner() {

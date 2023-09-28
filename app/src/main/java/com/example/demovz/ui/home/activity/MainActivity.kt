@@ -3,7 +3,6 @@ package com.example.demovz.ui.home.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.demovz.R
@@ -12,7 +11,6 @@ import com.example.demovz.ui.home.viewmodel.DeviceViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
@@ -22,10 +20,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        viewModel.getDevices().observe(this, Observer {
-            if(it.isEmpty())
+        viewModel.getDevices().observe(this) {
+            if (it.isEmpty())
                 viewModel.setDeviceData()
-        })
+        }
 
         val navView: BottomNavigationView? = binding?.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)

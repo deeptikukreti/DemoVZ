@@ -6,15 +6,12 @@ import androidx.room.Room
 import com.example.demovz.app.AppDatabase
 import com.example.demovz.db.dao.AreaDeviceDao
 import com.example.demovz.db.dao.EventDao
-import com.example.demovz.repo.DeviceRepository
-import com.example.demovz.repo.EventRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
 
 @InstallIn(SingletonComponent::class)
 @Module

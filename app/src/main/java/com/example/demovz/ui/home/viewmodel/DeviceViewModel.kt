@@ -17,29 +17,27 @@ import javax.inject.Inject
 class DeviceViewModel @Inject constructor(private val deviceRepository: DeviceRepository) :
     ViewModel() {
 
-//    @Inject
-//    var appPreference: AppPreference? = null
-
     fun setDeviceData() {
-       val job= viewModelScope.launch {
-           withContext(Dispatchers.Unconfined) {
-               val deviceList1 = ArrayList<Device>()
-               deviceList1.add(Device("Living Room AC", false))
-               deviceList1.add(Device("Living Room Led Lights", false))
-               deviceList1.add(Device("Living Room Tube Light", false))
-               deviceList1.add(Device("Living Room Fan", false))
-               deviceList1.add(Device("TV", false))
-               val area1 =
-                   Area(1, "Living Room", ArrayListConverter().fromStringArrayList(deviceList1))
-               deviceRepository.insertDevice(area1)
-           }
+        viewModelScope.launch {
+            withContext(Dispatchers.Unconfined) {
+                val deviceList1 = ArrayList<Device>()
+                deviceList1.add(Device("AC", false))
+                deviceList1.add(Device("Ceiling Lights", false))
+                deviceList1.add(Device("Room Heater", false))
+                deviceList1.add(Device("Cabinet Lights", false))
+                deviceList1.add(Device("TV", false))
+                val area1 =
+                    Area(1, "Living Room", ArrayListConverter().fromStringArrayList(deviceList1))
+                deviceRepository.insertDevice(area1)
+            }
 
             withContext(Dispatchers.Unconfined) {
                 val deviceList2 = ArrayList<Device>()
-                deviceList2.add(Device("Bed Room AC", false))
-                deviceList2.add(Device("Bed Room Led Lights", false))
-                deviceList2.add(Device("Bed Room Tube Light", false))
-                deviceList2.add(Device("Bed Room Fan", false))
+                deviceList2.add(Device("AC", false))
+                deviceList2.add(Device("Ceiling Lights", false))
+                deviceList2.add(Device("Room Heater", false))
+                deviceList2.add(Device("Cabinet Lights", false))
+                deviceList2.add(Device("TV", false))
                 val area2 =
                     Area(2, "Bed Room", ArrayListConverter().fromStringArrayList(deviceList2))
                 deviceRepository.insertDevice(area2)
@@ -47,38 +45,41 @@ class DeviceViewModel @Inject constructor(private val deviceRepository: DeviceRe
 
             withContext(Dispatchers.Unconfined) {
                 val deviceList3 = ArrayList<Device>()
-                deviceList3.add(Device("Kitchen Lights", false))
+                deviceList3.add(Device("Led Lights", false))
                 deviceList3.add(Device("Chimney", false))
                 deviceList3.add(Device("Refrigerator", false))
+                deviceList3.add(Device("Smart Coffeemaker", false))
                 val area3 =
                     Area(3, "Kitchen", ArrayListConverter().fromStringArrayList(deviceList3))
                 deviceRepository.insertDevice(area3)
             }
+
             withContext(Dispatchers.Unconfined) {
                 val deviceList4 = ArrayList<Device>()
-                deviceList4.add(Device("Lights", false))
-                deviceList4.add(Device("Fan", false))
+                deviceList4.add(Device("Led Lights", false))
+                deviceList4.add(Device("Room Heater", false))
+                deviceList4.add(Device("AC", false))
+                deviceList4.add(Device("Ceiling Lights", false))
                 val area4 =
                     Area(4, "Dining Area", ArrayListConverter().fromStringArrayList(deviceList4))
                 deviceRepository.insertDevice(area4)
             }
+
             withContext(Dispatchers.Unconfined) {
                 val deviceList5 = ArrayList<Device>()
-                deviceList5.add(Device("Light1", false))
-                deviceList5.add(Device("Light2", false))
+                deviceList5.add(Device("Ceiling Lights", false))
+                deviceList5.add(Device("Corner Walls Staircase Lights", false))
                 val area5 =
                     Area(5, "Staircase", ArrayListConverter().fromStringArrayList(deviceList5))
                 deviceRepository.insertDevice(area5)
             }
+
             withContext(Dispatchers.Unconfined) {
                 val deviceList6 = ArrayList<Device>()
-                deviceList6.add(Device("Ceiling Light", false))
-                deviceList6.add(Device("Hall Light1", false))
-                deviceList6.add(Device("Hall Light2", false))
-                deviceList6.add(Device("Hall Light3", false))
-                deviceList6.add(Device("Hall Light4", false))
+                deviceList6.add(Device("Led Lights", false))
+                deviceList6.add(Device("Geyser", false))
                 val area6 =
-                    Area(6, "Center Hall", ArrayListConverter().fromStringArrayList(deviceList6))
+                    Area(6, "Washroom", ArrayListConverter().fromStringArrayList(deviceList6))
                 deviceRepository.insertDevice(area6)
             }
         }
