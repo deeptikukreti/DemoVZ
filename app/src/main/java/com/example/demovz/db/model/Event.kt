@@ -1,4 +1,4 @@
-package com.example.demovz.db.events
+package com.example.demovz.db.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

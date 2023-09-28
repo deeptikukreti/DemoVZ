@@ -1,11 +1,11 @@
-package com.example.demovz.db.devices
+package com.example.demovz.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import kotlinx.coroutines.flow.Flow
+import com.example.demovz.db.model.Area
 
 
 @Dao

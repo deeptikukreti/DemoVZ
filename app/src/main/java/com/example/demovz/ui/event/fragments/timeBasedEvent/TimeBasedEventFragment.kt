@@ -7,18 +7,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.demovz.ui.event.adapter.eventsListAdapter.GroupListAdapter
 import com.example.demovz.databinding.FragmentTimeBasedEventBinding
-import com.example.demovz.db.events.Event
+import com.example.demovz.db.model.Event
 import com.example.demovz.db.events.RoomDb
 import com.example.demovz.ui.event.activity.EventDetailActivity
+import com.example.demovz.ui.event.viewModel.EventViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TimeBasedEventFragment : Fragment(), GroupListAdapter.OnItemClickListener{
-    private lateinit var viewModel: TimeBasedEventViewModel
+    private val eventViewModel: EventViewModel by  activityViewModels()
     private var _binding: FragmentTimeBasedEventBinding? = null
     private val binding get() = _binding!!
     private var groupList = ArrayList<Event>()
@@ -27,27 +32,30 @@ class TimeBasedEventFragment : Fragment(), GroupListAdapter.OnItemClickListener{
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[TimeBasedEventViewModel::class.java]
         _binding = FragmentTimeBasedEventBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         grpAdapter = GroupListAdapter(groupList).apply { setOnClickListener(this@TimeBasedEventFragment
         ) }
         binding.rvGrp.adapter = grpAdapter
-
-        CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
-
+//        CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
+        getGroupDataList()
         return root
     }
 
-    private suspend fun getGroupDataList() {
-        lifecycleScope.launch {
-            RoomDb.getInstance(requireContext()).eventDao().getEventByTrigger(1).collect { eventsList ->
-                if (eventsList.isNotEmpty()) {
-                    grpAdapter.submitList(eventsList)
-                }
+    private fun getGroupDataList() {
+        eventViewModel.getEventsByTriggerType(1).observe(requireActivity(), Observer {
+            it?.let {
+                grpAdapter.submitList(it)
             }
-        }
+        })
+//        lifecycleScope.launch {
+//            RoomDb.getInstance(requireContext()).eventDao().getEventByTrigger(1).collect { eventsList ->
+//                if (eventsList.isNotEmpty()) {
+//                    grpAdapter.submitList(eventsList)
+//                }
+//            }
+//        }
     }
 
     override fun onClicked(event: Event) {

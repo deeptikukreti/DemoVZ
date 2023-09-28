@@ -5,9 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.demovz.db.model.Event
+import com.example.demovz.db.dao.EventDao
 
 
-@Database(entities = [Event::class], version = 1)
+@Database( exportSchema = false,entities = [Event::class], version = 1)
 abstract class RoomDb : RoomDatabase() {
 
     abstract fun eventDao(): EventDao

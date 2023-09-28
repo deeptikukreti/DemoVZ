@@ -5,9 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.demovz.db.model.Area
+import com.example.demovz.db.dao.AreaDeviceDao
 
 
-@Database(entities = [Area::class], version = 1)
+@Database( exportSchema = false,entities = [Area::class], version = 1)
 abstract class DevicesRoomDb : RoomDatabase() {
 
     abstract fun areaDeviceDao(): AreaDeviceDao

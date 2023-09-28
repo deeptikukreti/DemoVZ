@@ -10,7 +10,9 @@ import com.example.demovz.databinding.ActivityEventListBinding
 import com.example.demovz.ui.event.fragments.activityBasedEvent.ActivityBasedEventFragment
 import com.example.demovz.ui.event.fragments.timeBasedEvent.TimeBasedEventFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EventListActivity : AppCompatActivity() {
     private var _binding: ActivityEventListBinding? = null
     private val binding get() = _binding!!
@@ -18,7 +20,6 @@ class EventListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityEventListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         viewInitialization()
     }
 

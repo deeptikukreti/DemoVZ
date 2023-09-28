@@ -22,7 +22,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSelectDevice"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="500dp"
         android:layout_margin="20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="@id/txt_add_device"

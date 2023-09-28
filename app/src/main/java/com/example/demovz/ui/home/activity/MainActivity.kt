@@ -3,29 +3,38 @@ package com.example.demovz.ui.home.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.demovz.R
 import com.example.demovz.databinding.ActivityMainBinding
-import com.example.demovz.db.devices.Area
+import com.example.demovz.db.model.Area
 import com.example.demovz.db.devices.DevicesRoomDb
-import com.example.demovz.db.events.Device
+import com.example.demovz.db.model.Device
+import com.example.demovz.ui.home.viewmodel.DeviceViewModel
 import com.example.demovz.util.ArrayListConverter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 //@AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
-    //private val viewModel: MainActivityViewModel by  viewModels()
-
+    private val viewModel: DeviceViewModel by  viewModels()
+//    @Inject
+//    var appPreference: AppPreference? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        addDeviceData()
-        val navView: BottomNavigationView? = binding?.navView
+        viewModel.getDevices().observe(this, Observer {
+            if(it.isEmpty())
+                viewModel.setDeviceData()
+        })
 
+        //addDeviceData()
+        val navView: BottomNavigationView? = binding?.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView?.setupWithNavController(navController)
 

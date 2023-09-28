@@ -4,7 +4,7 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 
-@HiltAndroidApp
+@HiltAndroidApp()
 open class AppController : Application() {
 
     companion object {

@@ -1,9 +1,8 @@
-package com.example.demovz.db.devices
+package com.example.demovz.db.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.demovz.db.events.Device
 
 
 @Entity(tableName = "area_device_table")
@@ -14,10 +13,11 @@ data class Area(
                  val deviceList: String)
 
 data class AreaWithDeviceData(
-    val areaId: Int , val areaName :String ,
-    var deviceList: ArrayList<Device>,var isExpanded:Boolean=true)
+    val areaId: Int, val areaName :String,
+    var deviceList: ArrayList<Device>, var isExpanded:Boolean=true)
 
 data class SelectDeviceData(
     val areaId: Int , val areaName :String ,
-    val device: Device)
+    val device: Device
+)
 

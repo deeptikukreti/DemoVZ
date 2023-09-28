@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.SelectDeviceItemLayoutBinding
-import com.example.demovz.db.events.Device
+import com.example.demovz.db.model.Device
 
 class SelectDevicesListAdapter(
 ) : RecyclerView.Adapter<SelectDevicesListAdapter.ViewHolder>() {

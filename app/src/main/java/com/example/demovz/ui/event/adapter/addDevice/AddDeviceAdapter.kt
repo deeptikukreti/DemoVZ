@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.R
 import com.example.demovz.databinding.AreaItemLayoutBinding
-import com.example.demovz.db.devices.AreaWithDeviceData
-import com.example.demovz.db.events.Device
+import com.example.demovz.db.model.AreaWithDeviceData
+import com.example.demovz.db.model.Device
 
 class AddDeviceAdapter(
     private var areaList: ArrayList<AreaWithDeviceData>,
@@ -99,7 +99,7 @@ class AddDeviceAdapter(
     }
 
     interface OnItemClickListener {
-        fun onClicked(areaPos:Int,i: Device, isChecked: Boolean, devicePos: Int)
+        fun onClicked(areaPos:Int, i: Device, isChecked: Boolean, devicePos: Int)
         fun onExpanded(areaPos: Int, isExpanded: Boolean)
 
     }

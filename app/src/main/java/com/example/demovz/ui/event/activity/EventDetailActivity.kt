@@ -6,19 +6,27 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.demovz.R
 import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
 import com.example.demovz.databinding.ActivityEventDetailBinding
-import com.example.demovz.db.devices.AreaWithDeviceData
-import com.example.demovz.db.events.Event
+import com.example.demovz.db.model.AreaWithDeviceData
+import com.example.demovz.db.model.Event
 import com.example.demovz.db.events.RoomDb
+import com.example.demovz.ui.event.viewModel.EventViewModel
+import com.example.demovz.ui.home.viewmodel.DeviceViewModel
 import com.example.demovz.util.ArrayListConverter
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener {
 
     var binding: ActivityEventDetailBinding? = null
+
+    private val eventViewModel : EventViewModel by viewModels()
+
     private lateinit var areaAdapter: AreaAdapter
 
     private var eventName: String = ""
@@ -40,72 +48,57 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             setSupportActionBar(toolbar)
             ivLogo.visibility = View.GONE
             backIcon.visibility = View.VISIBLE
-//            editImg.visibility = View.VISIBLE
-//            cancelImg.visibility = View.VISIBLE
             txtTitle.text = getString(R.string.event_details)
             this.toolbar.title = ""
 
             backIcon.setOnClickListener {
                 onBackPressed()
             }
-
-            editImg.setOnClickListener {
-                startActivity(
-                    Intent(
-                        this@EventDetailActivity,
-                        EditEventActivity::class.java
-                    ).putExtra("ID", eventId)
-                )
-            }
-
-            cancelImg.setOnClickListener {
-                RoomDb.getInstance(
-                    applicationContext
-                ).eventDao().delete(event = data)
-                onBackPressed()
-                finish()
-            }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setData() {
-        data = RoomDb.getInstance(applicationContext).eventDao().getEvent(eventId!!)
-        if (data != null) {
-            binding?.apply {
-                eventName = data.eventName
-                triggerType = data.triggerType
-                dateTime = data.dateTime
-                isRecurring = data.isRecurring
-                sensorDevice = data.sensorDevice
-                txtEvntName.text = "Event/Scene Name : " + data.eventName
-                if (data.triggerType == 1) {
-                    txtTriggerType.text = "Trigger Type : Time Based"
-                    grpSelectDateTime.visibility = View.VISIBLE
-                    tvDateTime.text = data.dateTime
-                    if (data.isRecurring)
-                        txtRecurring.text = "Event Type : Recurring"
-                    else
-                        txtRecurring.text = "Event Type : One Time"
-                } else {
-                    txtTriggerType.text = "Trigger Type : Activity Based"
-                    txtSensorDevice.visibility = View.VISIBLE
-                    txtSensorDevice.text = "Sensor Device : ${data.sensorDevice}"
-                }
+        eventViewModel.getEventById(eventId!!).observe(this, Observer {
+            it?.let{
+                 data=it
+                binding?.apply {
+                    eventName = data.eventName
+                    triggerType = data.triggerType
+                    dateTime = data.dateTime
+                    isRecurring = data.isRecurring
+                    sensorDevice = data.sensorDevice
+                    txtEvntName.text = "Event/Scene Name : " + data.eventName
+                    if (data.triggerType == 1) {
+                        txtTriggerType.text = "Trigger Type : Time Based"
+                        grpSelectDateTime.visibility = View.VISIBLE
+                        tvDateTime.text = data.dateTime
+                        if (data.isRecurring)
+                            txtRecurring.text = "Event Type : Recurring"
+                        else
+                            txtRecurring.text = "Event Type : One Time"
+                    } else {
+                        txtTriggerType.text = "Trigger Type : Activity Based"
+                        txtSensorDevice.visibility = View.VISIBLE
+                        txtSensorDevice.text = "Sensor Device : ${data.sensorDevice}"
+                    }
 
-                selectedDeviceList =
-                    ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
-                selectedDeviceList.forEach {
-                    it.isExpanded=true
+                    selectedDeviceList =
+                        ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
+                    selectedDeviceList.forEach {
+                        it.isExpanded=true
+                    }
+                    areaAdapter = AreaAdapter(
+                        selectedDeviceList,
+                        true,
+                        this@EventDetailActivity
+                    ).apply { this.setOnClickListener(this@EventDetailActivity) }
+                    binding?.rvGrp?.adapter = areaAdapter
                 }
-                areaAdapter = AreaAdapter(
-                    selectedDeviceList,
-                    true,
-                    this@EventDetailActivity
-                ).apply { this.setOnClickListener(this@EventDetailActivity) }
-                binding?.rvGrp?.adapter = areaAdapter
             }
-        }
+        })
+//        data = RoomDb.getInstance(applicationContext).eventDao().getEvent(eventId!!)
+
     }
 
     override fun onResume() {
@@ -146,7 +139,8 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
             }
 
             R.id.delete -> {
-                RoomDb.getInstance(applicationContext).eventDao().delete(event = data)
+                eventViewModel.deleteEvent(data)
+               // RoomDb.getInstance(applicationContext).eventDao().delete(event = data)
                 onBackPressed()
                 finish()
                 true

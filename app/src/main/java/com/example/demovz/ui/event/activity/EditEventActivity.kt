@@ -13,25 +13,32 @@ import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.R
 import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
 import com.example.demovz.ui.event.adapter.addDevice.AddDeviceAdapter
 import com.example.demovz.databinding.ActivityEditEventBinding
-import com.example.demovz.db.devices.AreaWithDeviceData
+import com.example.demovz.db.model.AreaWithDeviceData
 import com.example.demovz.db.devices.DevicesRoomDb
-import com.example.demovz.db.events.Device
-import com.example.demovz.db.events.Event
+import com.example.demovz.db.model.Device
+import com.example.demovz.db.model.Event
 import com.example.demovz.db.events.RoomDb
+import com.example.demovz.ui.event.viewModel.EventViewModel
+import com.example.demovz.ui.home.viewmodel.DeviceViewModel
 import com.example.demovz.util.ArrayListConverter
 import com.example.demovz.util.CommonUtils
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
+@AndroidEntryPoint
 class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     var binding: ActivityEditEventBinding? = null
-
+    private val eventViewModel : EventViewModel by viewModels()
+    private val deviceViewModel : DeviceViewModel by viewModels()
     private lateinit var areaAdapter: AreaAdapter
 
     private var hour: Int = 0
@@ -49,7 +56,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     private var endDateTime: String = ""
     private var isRecurring: Boolean = false
     var sensorDevice = ""
-    var id: Int? = 0
+    var eventId: Int? = 0
 
     private var selectDeviceList = ArrayList<AreaWithDeviceData>()
     private var selectedDeviceListForUI = ArrayList<AreaWithDeviceData>()
@@ -66,16 +73,16 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
         super.onCreate(savedInstanceState)
         binding = ActivityEditEventBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        id = intent?.extras?.getInt("ID")
-        getDeviceData()
+        eventId = intent?.extras?.getInt("ID")
+       // getDeviceData()
         setSpinner()
         setData()
         viewInitialization()
     }
 
     private fun getDeviceData() {
-        DevicesRoomDb.getInstance(applicationContext).areaDeviceDao().getAllAreaWithDevices()
-            .onEach { area ->
+        deviceViewModel.getDevices().observe(this, Observer {
+            it.forEach {area->
                 val deviceList = ArrayListConverter().toStringArrayList(area.deviceList)
                 selectDeviceList.add(
                     AreaWithDeviceData(
@@ -86,6 +93,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                     )
                 )
             }
+        })
     }
 
     private fun setSpinner() {
@@ -115,54 +123,55 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     }
 
     private fun setData() {
-        val data = RoomDb.getInstance(applicationContext).eventDao().getEvent(id!!)
-        data?.let {
-            binding?.apply {
-                eventName = data.eventName
-                triggerType = data.triggerType
-                val bothDate = data.dateTime.split("to")
-                if (bothDate.isNotEmpty()) {
-                    dateTime = bothDate[0]
-                }
-                if (bothDate.size > 1) {
-                    endDateTime = bothDate[1]
-                }
-                isRecurring = data.isRecurring
-                sensorDevice = data.sensorDevice
-                edtEventName.setText(data.eventName)
-                if (data.triggerType == 1) {
-                    rbTimeBased.isChecked = true
-                    grpSelectDateTime.visibility = View.VISIBLE
-                    grpAddDevice.visibility = View.VISIBLE
-                    tvDateTime.text = dateTime
-                    tvToDateTime.text = endDateTime
-                    cbRecurring.isChecked = data.isRecurring
-                } else {
-                    rbEventBased.isChecked = true
-                    grpSelectEventType.visibility = View.VISIBLE
-                    binding?.spinner?.setSelection(list.indexOf(sensorDevice))
-                }
+        eventViewModel.getEventById(eventId!!).observe(this, Observer {data->
+            data?.let {
+                binding?.apply {
+                    eventName = data.eventName
+                    triggerType = data.triggerType
+                    val bothDate = data.dateTime.split("to")
+                    if (bothDate.isNotEmpty()) {
+                        dateTime = bothDate[0]
+                    }
+                    if (bothDate.size > 1) {
+                        endDateTime = bothDate[1]
+                    }
+                    isRecurring = data.isRecurring
+                    sensorDevice = data.sensorDevice
+                    edtEventName.setText(data.eventName)
+                    if (data.triggerType == 1) {
+                        rbTimeBased.isChecked = true
+                        grpSelectDateTime.visibility = View.VISIBLE
+                        grpAddDevice.visibility = View.VISIBLE
+                        tvDateTime.text = dateTime
+                        tvToDateTime.text = endDateTime
+                        cbRecurring.isChecked = data.isRecurring
+                    } else {
+                        rbEventBased.isChecked = true
+                        grpSelectEventType.visibility = View.VISIBLE
+                        binding?.spinner?.setSelection(list.indexOf(sensorDevice))
+                    }
 
-                btnSaveEvent.visibility = View.VISIBLE
+                    btnSaveEvent.visibility = View.VISIBLE
 
-                selectedDeviceListForUI =
-                    ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
-                selectDeviceList =
-                    ArrayListConverter().toStringArrayListAreaWithDevice(data.selectDeviceList)
+                    selectedDeviceListForUI =
+                        ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
+                    selectDeviceList =
+                        ArrayListConverter().toStringArrayListAreaWithDevice(data.selectDeviceList)
 
-                selectedDeviceListForUI.forEach {
-                    it.isExpanded = true
+                    selectedDeviceListForUI.forEach {
+                        it.isExpanded = true
+                    }
+
+                    areaAdapter =
+                        AreaAdapter(
+                            selectedDeviceListForUI,
+                            false,
+                            this@EditEventActivity
+                        ).apply { setOnClickListener(this@EditEventActivity) }
+                    binding?.rvGrp?.adapter = areaAdapter
                 }
-
-                areaAdapter =
-                    AreaAdapter(
-                        selectedDeviceListForUI,
-                        false,
-                        this@EditEventActivity
-                    ).apply { setOnClickListener(this@EditEventActivity) }
-                binding?.rvGrp?.adapter = areaAdapter
             }
-        }
+        })
     }
 
     private fun viewInitialization() {
@@ -286,7 +295,7 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
 
     private fun saveEventDetails() {
         val eventObj = Event(
-            id = id,
+            id = eventId,
             eventName = eventName,
             triggerType = triggerType,
             dateTime = "$dateTime to $endDateTime",
@@ -299,7 +308,8 @@ class EditEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
                 selectDeviceList
             )
         )
-        RoomDb.getInstance(applicationContext).eventDao().update(eventObj)
+        eventViewModel.updateEvent(eventObj)
+//        RoomDb.getInstance(applicationContext).eventDao().update(eventObj)
         onBackPressed()
         finish()
     }

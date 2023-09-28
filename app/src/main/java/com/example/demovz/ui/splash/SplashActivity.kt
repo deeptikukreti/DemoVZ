@@ -7,7 +7,9 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.example.demovz.databinding.ActivitySplashBinding
 import com.example.demovz.ui.home.activity.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashBinding

@@ -12,26 +12,34 @@ import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.R
 import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
 import com.example.demovz.ui.event.adapter.addDevice.AddDeviceAdapter
 import com.example.demovz.databinding.ActivityCreateEventBinding
-import com.example.demovz.db.devices.AreaWithDeviceData
+import com.example.demovz.db.model.AreaWithDeviceData
 import com.example.demovz.db.devices.DevicesRoomDb
-import com.example.demovz.db.events.Device
-import com.example.demovz.db.events.Event
+import com.example.demovz.db.model.Device
+import com.example.demovz.db.model.Event
 import com.example.demovz.db.events.RoomDb
+import com.example.demovz.ui.event.viewModel.EventViewModel
+import com.example.demovz.ui.home.viewmodel.DeviceViewModel
 import com.example.demovz.util.ArrayListConverter
 import com.example.demovz.util.CommonUtils
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
-
+@AndroidEntryPoint
 class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener,
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     var binding: ActivityCreateEventBinding? = null
+    private val eventViewModel : EventViewModel by viewModels()
+    private val deviceViewModel : DeviceViewModel by viewModels()
+
     private lateinit var areaAdapter: AreaAdapter
 
     private var hour: Int = 0
@@ -62,8 +70,8 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     }
 
     private fun getDeviceData() {
-        DevicesRoomDb.getInstance(applicationContext).areaDeviceDao().getAllAreaWithDevices()
-            .onEach { area ->
+        deviceViewModel.getDevices().observe(this, Observer {
+            it.forEach {area->
                 val deviceList = ArrayListConverter().toStringArrayList(area.deviceList)
                 selectDeviceList.add(
                     AreaWithDeviceData(
@@ -74,6 +82,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                     )
                 )
             }
+        })
     }
 
     private fun setSpinner() {
@@ -244,7 +253,7 @@ class CreateEventActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                 selectDeviceList
             )
         )
-        RoomDb.getInstance(applicationContext).eventDao().insert(eventObj)
+        eventViewModel.createEvent(eventObj)
         onBackPressed()
         finish()
     }
