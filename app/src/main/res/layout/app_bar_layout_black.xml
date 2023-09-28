@@ -41,7 +41,7 @@
         android:id="@+id/txt_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Event/Scene"
+        android:text="Event Detail"
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
