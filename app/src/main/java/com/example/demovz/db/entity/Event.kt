@@ -1,10 +1,8 @@
-package com.example.demovz.db.model
+package com.example.demovz.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.example.demovz.util.ArrayListConverter
 
 @Entity(tableName = "event_table")
 data class Event(

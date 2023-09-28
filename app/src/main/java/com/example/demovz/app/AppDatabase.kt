@@ -2,8 +2,8 @@ package com.example.demovz.app
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.demovz.db.model.Area
-import com.example.demovz.db.model.Event
+import com.example.demovz.db.entity.Area
+import com.example.demovz.db.entity.Event
 import com.example.demovz.db.dao.AreaDeviceDao
 import com.example.demovz.db.dao.EventDao
 

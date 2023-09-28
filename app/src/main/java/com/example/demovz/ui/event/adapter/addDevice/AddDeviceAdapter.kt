@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.R
 import com.example.demovz.databinding.AreaItemLayoutBinding
-import com.example.demovz.db.model.AreaWithDeviceData
-import com.example.demovz.db.model.Device
+import com.example.demovz.db.entity.AreaWithDeviceData
+import com.example.demovz.db.entity.Device
 
 class AddDeviceAdapter(
     private var areaList: ArrayList<AreaWithDeviceData>,

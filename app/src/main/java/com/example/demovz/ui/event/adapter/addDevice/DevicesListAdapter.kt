@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.DeviceDetailItemLayoutBinding
 import com.example.demovz.databinding.DeviceItemLayoutBinding
-import com.example.demovz.db.model.Device
+import com.example.demovz.db.entity.Device
 
 class DevicesListAdapter(
     private var devicesList: ArrayList<Device>,

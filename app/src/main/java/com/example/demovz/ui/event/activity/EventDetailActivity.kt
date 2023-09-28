@@ -12,11 +12,9 @@ import androidx.lifecycle.Observer
 import com.example.demovz.R
 import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
 import com.example.demovz.databinding.ActivityEventDetailBinding
-import com.example.demovz.db.model.AreaWithDeviceData
-import com.example.demovz.db.model.Event
-import com.example.demovz.db.events.RoomDb
+import com.example.demovz.db.entity.AreaWithDeviceData
+import com.example.demovz.db.entity.Event
 import com.example.demovz.ui.event.viewModel.EventViewModel
-import com.example.demovz.ui.home.viewmodel.DeviceViewModel
 import com.example.demovz.util.ArrayListConverter
 import dagger.hilt.android.AndroidEntryPoint
 

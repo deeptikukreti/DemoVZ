@@ -1,6 +1,6 @@
 package com.example.demovz.repo
 
-import com.example.demovz.db.model.Event
+import com.example.demovz.db.entity.Event
 import com.example.demovz.db.dao.EventDao
 import javax.inject.Inject
 

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.GroupItemLayoutBinding
-import com.example.demovz.db.model.Event
+import com.example.demovz.db.entity.Event
 
 class GroupListAdapter(
     private var groupList: ArrayList<Event>,

@@ -9,8 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
 import com.example.demovz.databinding.FragmentDeviceBinding
-import com.example.demovz.db.model.Area
-import com.example.demovz.db.model.AreaWithDeviceData
+import com.example.demovz.db.entity.Area
+import com.example.demovz.db.entity.AreaWithDeviceData
 import com.example.demovz.ui.home.viewmodel.DeviceViewModel
 import com.example.demovz.util.ArrayListConverter
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,8 +1,8 @@
 package com.example.demovz.util
 
 import androidx.room.TypeConverter
-import com.example.demovz.db.model.AreaWithDeviceData
-import com.example.demovz.db.model.Device
+import com.example.demovz.db.entity.AreaWithDeviceData
+import com.example.demovz.db.entity.Device
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type

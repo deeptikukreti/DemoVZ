@@ -1,6 +1,6 @@
 package com.example.demovz.repo
 
-import com.example.demovz.db.model.Area
+import com.example.demovz.db.entity.Area
 import com.example.demovz.db.dao.AreaDeviceDao
 import javax.inject.Inject
 

@@ -21,11 +21,9 @@ import com.example.demovz.R
 import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
 import com.example.demovz.ui.event.adapter.addDevice.AddDeviceAdapter
 import com.example.demovz.databinding.ActivityEditEventBinding
-import com.example.demovz.db.model.AreaWithDeviceData
-import com.example.demovz.db.devices.DevicesRoomDb
-import com.example.demovz.db.model.Device
-import com.example.demovz.db.model.Event
-import com.example.demovz.db.events.RoomDb
+import com.example.demovz.db.entity.AreaWithDeviceData
+import com.example.demovz.db.entity.Device
+import com.example.demovz.db.entity.Event
 import com.example.demovz.ui.event.viewModel.EventViewModel
 import com.example.demovz.ui.home.viewmodel.DeviceViewModel
 import com.example.demovz.util.ArrayListConverter

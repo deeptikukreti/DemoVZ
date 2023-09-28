@@ -3,9 +3,8 @@ package com.example.demovz.ui.home.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.demovz.db.model.Area
-import com.example.demovz.db.model.AreaWithDeviceData
-import com.example.demovz.db.model.Device
+import com.example.demovz.db.entity.Area
+import com.example.demovz.db.entity.Device
 import com.example.demovz.repo.DeviceRepository
 import com.example.demovz.util.ArrayListConverter
 import dagger.hilt.android.lifecycle.HiltViewModel

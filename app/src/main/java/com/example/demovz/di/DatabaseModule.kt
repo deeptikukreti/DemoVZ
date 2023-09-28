@@ -25,15 +25,9 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideEventRepository(eventDao: EventDao) = EventRepository(eventDao)
-
-    @Provides
     fun provideDeviceDao(appDatabase: AppDatabase) : AreaDeviceDao {
         return appDatabase.deviceDao()
     }
-
-    @Provides
-    fun provideDeviceRepository(areaDeviceDao: AreaDeviceDao) = DeviceRepository(areaDeviceDao)
 
     @Provides
     @Singleton
@@ -48,8 +42,5 @@ object DatabaseModule {
 
     }
 
-//    @Provides
-//    @Singleton
-//    fun providePreference( @ApplicationContext
-//                           context: Context)=AppPreference(context)
+
 }

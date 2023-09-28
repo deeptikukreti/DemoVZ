@@ -1,4 +1,4 @@
-package com.example.demovz.db.model
+package com.example.demovz.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
