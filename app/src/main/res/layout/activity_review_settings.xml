@@ -23,9 +23,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-        tools:context=".ui.event.activity.EditEventActivity"
-        app:layout_constraintBottom_toBottomOf="parent">
+        tools:context=".ui.event.activity.EditEventActivity">
 
         <TextView
             android:id="@+id/txt_evnt_name"
@@ -44,11 +44,11 @@
             android:id="@+id/txt_trigger_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:text="Device List: "
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_evnt_name" />
 
@@ -69,9 +69,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/colorGrey"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_area">
 
@@ -125,10 +125,10 @@
                     android:text="Timing: 8 PM to 6 AM (Next Day)"
                     android:textSize="18sp"
                     android:textStyle="italic"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_action_temp"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_action_temp" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -138,10 +138,11 @@
             android:id="@+id/txt_area3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
             android:text="Kitchen"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardView" />
@@ -160,57 +161,59 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/txt_device_name3"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:gravity="center"
-                    android:text="Refrigerator"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_weight="0.4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.6"
-                    android:background="@drawable/rectangle"
-                    android:layout_marginEnd="5dp">
-
-                    <Spinner
-                        android:id="@+id/sp_kitchen"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:entries="@array/test_array"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                    <TextView
+                        android:id="@+id/txt_device_name3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:text="Refrigerator"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="0.6"
+                        android:background="@drawable/rectangle">
 
-            </LinearLayout>
+                        <Spinner
+                            android:id="@+id/sp_kitchen"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:entries="@array/test_array"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/txt_area2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
             android:text="Living Room"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardView3" />
@@ -220,10 +223,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/colorGrey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_area2">
+            app:layout_constraintTop_toBottomOf="@id/cardView4">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -247,7 +251,7 @@
                     android:id="@+id/seekBar2"
                     android:layout_width="200dp"
                     android:layout_height="30dp"
-                    android:progress="90"
+                    android:progress="10"
                     app:layout_constraintBottom_toBottomOf="@id/txt_action_temp2"
                     app:layout_constraintEnd_toStartOf="@id/seekBarPer2"
                     app:layout_constraintTop_toTopOf="@id/txt_action_temp2" />
@@ -259,7 +263,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="10dp"
                     android:gravity="center_vertical"
-                    android:text="90%"
+                    android:text="10%"
                     android:textSize="18sp"
                     android:textStyle="italic"
                     app:layout_constraintBottom_toBottomOf="@id/seekBar2"
@@ -271,15 +275,91 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
+                    android:layout_weight="0.3"
+                    android:gravity="center"
                     android:text="Timing: 7 AM to 5 PM "
                     android:textSize="18sp"
                     android:textStyle="italic"
-                    android:layout_weight="0.3"
-                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_action_temp2"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@id/txt_action_temp2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:backgroundTint="@color/colorGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_area2">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_action_temp3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:text="Ceiling lights"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_action_temp4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:text="Off"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/toggle_btn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Switch
+                    android:id="@+id/toggle_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="5dp"
+                    android:showText="false"
+                    android:textOff="OFF"
+                    android:textOn="ON"
+                    android:thumb="@drawable/thumb_selector"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                <TextView
+                    android:id="@+id/txt_device_name7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:layout_weight="0.3"
+                    android:gravity="center"
+                    android:text="Timing: 7 AM to 5 PM "
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_action_temp3" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
@@ -290,28 +370,28 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="20dp"
+            android:layout_weight="0.3"
+            android:gravity="center"
             android:text="Estimated Energy Saving - 84 units (per week)"
             android:textSize="20sp"
-            android:gravity="center"
             android:textStyle="bold"
-            android:layout_weight="0.3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardView2"/>
+            app:layout_constraintTop_toBottomOf="@id/cardView2" />
 
         <Button
             android:id="@+id/txt_device_name5"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="15dp"
-            android:text="Apply"
             android:backgroundTint="@color/black"
+            android:text="Apply"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
