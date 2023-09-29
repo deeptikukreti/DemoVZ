@@ -3,6 +3,7 @@ package com.example.demovz.ui.event.adapter.addDevice
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.DeviceDetailItemLayoutBinding
 import com.example.demovz.databinding.DeviceItemLayoutBinding
@@ -41,9 +42,29 @@ class DevicesListAdapter(
         if (isEventDetail) {
             with(holder as DeviceDetailViewHolder) {
                 binding.apply {
-                    val action = if(devicesList[position].action) "ON" else "OFF"
+                    val data = devicesList[position]
+                    val action = if(data.action) "ON" else "OFF"
                     txtDeviceName.text =
-                        "${devicesList[position].deviceName} : $action"
+                        "${data.deviceName} : $action"
+
+                    if(action=="ON")
+                    {
+                        txtFeatureName.visibility=View.VISIBLE
+                        txtFeatureName.text=data.feature.featureName
+                        if(data.feature.uiType==1)
+                        {
+                            groupSeekbar.visibility=View.VISIBLE
+                            seekBar.progress=data.feature.defaultFeatureValue.toInt()
+                            seekBarValue.text="${data.feature.defaultFeatureValue}${data.feature.unit}"
+                        }else{
+                            groupDropdown.visibility=View.VISIBLE
+                        }
+                    }else{
+                        txtDeviceName.setPadding(20,20,20,20)
+                        txtFeatureName.visibility=View.GONE
+                        groupSeekbar.visibility=View.GONE
+                        groupDropdown.visibility=View.GONE
+                    }
                 }
             }
         } else {
