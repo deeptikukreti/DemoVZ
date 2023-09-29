@@ -21,3 +21,8 @@ data class SelectDeviceData(
     val device: Device
 )
 
+data class Device(val deviceName: String, var action: Boolean, var isSelected: Boolean = false,val feature:Feature)
+
+/*uiType 1= seekbar
+* uiType 2= dropdown*/
+data class Feature(val uiType:Int,val featureName : String , val defaultFeatureValue:String, val unit:String)

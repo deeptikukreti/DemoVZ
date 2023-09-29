@@ -13,19 +13,21 @@ import com.example.demovz.R
 import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
 import com.example.demovz.databinding.ActivityEventDetailBinding
 import com.example.demovz.db.entity.AreaWithDeviceData
+import com.example.demovz.db.entity.Device
 import com.example.demovz.db.entity.Event
+import com.example.demovz.ui.event.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.ui.event.viewModel.EventViewModel
 import com.example.demovz.util.ArrayListConverter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener {
+class EventDetailActivity : AppCompatActivity(){
 
     var binding: ActivityEventDetailBinding? = null
 
     private val eventViewModel : EventViewModel by viewModels()
 
-    private lateinit var areaAdapter: AreaAdapter
+    private lateinit var deviceAdapter: DevicesListAdapter
 
     private var eventName: String = ""
     private var triggerType: Int = 0 //1=time base ,2=event based
@@ -34,14 +36,16 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
     private var sensorDevice = ""
     private var eventId: Int? = 0
     private lateinit var data: Event
-    private var selectedDeviceList = ArrayList<AreaWithDeviceData>()
+    private var selectedDeviceList = ArrayList<Device>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEventDetailBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         eventId = intent?.extras?.getInt("ID")
+        viewInit()
+    }
 
-
+    private fun viewInit() {
         binding?.appBar?.apply {
             setSupportActionBar(toolbar)
             ivLogo.visibility = View.GONE
@@ -72,50 +76,27 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
                         grpSelectDateTime.visibility = View.VISIBLE
                         tvDateTime.text = data.dateTime
                         if (data.isRecurring)
-                            txtRecurring.text = "Event Type : Recurring"
+                            txtRecurring.text = "Occurence type : Recurring"
                         else
-                            txtRecurring.text = "Event Type : One Time"
+                            txtRecurring.text = "Occurence type : One Time"
                     } else {
                         txtTriggerType.text = "Trigger Type : Activity Based"
                         txtSensorDevice.visibility = View.VISIBLE
                         txtSensorDevice.text = "Sensor Device : ${data.sensorDevice}"
                     }
-
+                    txtArea.text="Area : ${data.areaName}"
                     selectedDeviceList =
-                        ArrayListConverter().toStringArrayListAreaWithDevice(data.deviceList)
-                    selectedDeviceList.forEach {
-                        it.isExpanded=true
-                    }
-                    areaAdapter = AreaAdapter(
-                        selectedDeviceList,
-                        true,
-                        this@EventDetailActivity
-                    ).apply { this.setOnClickListener(this@EventDetailActivity) }
-                    binding?.rvGrp?.adapter = areaAdapter
+                        ArrayListConverter().toStringArrayList(data.selectDeviceList)
+                    deviceAdapter= DevicesListAdapter(selectedDeviceList,true)
+                    binding?.rvGrp?.adapter = deviceAdapter
                 }
             }
         })
-//        data = RoomDb.getInstance(applicationContext).eventDao().getEvent(eventId!!)
-
     }
 
     override fun onResume() {
         super.onResume()
         setData()
-    }
-
-    override fun onToggleClicked(areaPos: Int, s: String, action: Boolean, devicePos: Int) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onDeviceRemoved(areaPos: Int, devicePos: Int) {
-        // TODO("Not yet implemented")
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onExpanded(areaPos: Int, isExpanded: Boolean) {
-        selectedDeviceList[areaPos].isExpanded = isExpanded
-        areaAdapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -138,7 +119,6 @@ class EventDetailActivity : AppCompatActivity(), AreaAdapter.OnItemClickListener
 
             R.id.delete -> {
                 eventViewModel.deleteEvent(data)
-               // RoomDb.getInstance(applicationContext).eventDao().delete(event = data)
                 onBackPressed()
                 finish()
                 true

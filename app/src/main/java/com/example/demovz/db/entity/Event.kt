@@ -18,6 +18,10 @@ data class Event(
     val isRecurring: Boolean,
     @ColumnInfo(name = "sensor_device")
     val sensorDevice: String,
+    @ColumnInfo(name = "selected_area_id")
+    val areaId:Int,
+    @ColumnInfo(name = "selected_area_name")
+    val areaName: String,
     @ColumnInfo(name = "device_list")
     val deviceList: String,
     @ColumnInfo(name = "select_device_list")
@@ -25,5 +29,5 @@ data class Event(
 
 )
 
-data class Device(val deviceName: String, var action: Boolean, var isSelected: Boolean = false)
+
 

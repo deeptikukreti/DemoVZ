@@ -9,5 +9,6 @@ class DeviceRepository @Inject constructor(private val areaDeviceDao: AreaDevice
         suspend fun  insertDevice(data: Area) = areaDeviceDao.insert(data)
 
         suspend fun  getAllDevices() = areaDeviceDao.getAllAreaWithDevices()
+        suspend fun  getDevicesByAreaId(areaId:Int) = areaDeviceDao.getDeviceListByArea(areaId)
 
 }

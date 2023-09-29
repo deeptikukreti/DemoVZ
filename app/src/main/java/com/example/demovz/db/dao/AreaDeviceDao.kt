@@ -27,5 +27,5 @@ interface AreaDeviceDao  {
     fun getAllAreaWithDevices():List<Area>
 
     @Query("SELECT * FROM area_device_table WHERE areaId LIKE:id")
-    fun getAreaData(id:Int): Area
+    fun getDeviceListByArea(id:Int): Area
 }
