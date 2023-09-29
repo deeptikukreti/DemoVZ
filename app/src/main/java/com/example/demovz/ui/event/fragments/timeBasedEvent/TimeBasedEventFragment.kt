@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.example.demovz.ui.event.adapter.eventsListAdapter.GroupListAdapter
 import com.example.demovz.databinding.FragmentTimeBasedEventBinding
 import com.example.demovz.db.entity.Event
@@ -32,16 +31,23 @@ class TimeBasedEventFragment : Fragment(), GroupListAdapter.OnItemClickListener{
         grpAdapter = GroupListAdapter(groupList).apply { setOnClickListener(this@TimeBasedEventFragment
         ) }
         binding.rvGrp.adapter = grpAdapter
-        getGroupDataList()
         return root
     }
 
     private fun getGroupDataList() {
-        eventViewModel.getEventsByTriggerType(1).observe(requireActivity(), Observer {
-            it?.let {
+        eventViewModel.getEventsByTriggerType(1).observe(requireActivity()) {
+            if (it.isEmpty()){
+                binding.txtEvntName.visibility = View.VISIBLE
+            } else{
+                binding.txtEvntName.visibility = View.GONE
                 grpAdapter.submitList(it)
             }
-        })
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getGroupDataList()
     }
 
     override fun onClicked(event: Event) {

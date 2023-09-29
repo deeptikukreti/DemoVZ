@@ -92,10 +92,10 @@ class CreateEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickL
     }
     private fun setSpinner() {
         val list = arrayListOf(
-            "Please Select Sensor Device: ",
+            "Please Select Sensor / Device: ",
             "Main Door Sensor",
             "Bedroom Door Sensor",
-            "Kitchen Door sensor",
+            "Kitchen Stove",
             "Stairs Sensor"
         )
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
@@ -157,7 +157,7 @@ class CreateEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickL
                 onBackPressed()
             }
         }
-        selectedDeviceAdapter=DevicesListAdapter(selectedDeviceListByAreaId,false).apply { this.setOnClickListener(this@CreateEventActivity) }
+        selectedDeviceAdapter=DevicesListAdapter(selectedDeviceListByAreaId,false, false).apply { this.setOnClickListener(this@CreateEventActivity) }
         binding?.rvGrp?.adapter=selectedDeviceAdapter
         binding?.apply {
 
@@ -280,14 +280,14 @@ class CreateEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickL
             selectDeviceList = ArrayListConverter().fromStringArrayList(selectedDeviceListByAreaId)
         )
         eventViewModel.createEvent(eventObj)
-        onBackPressed()
-        finish()
+        CommonUtils.successDialog(this@CreateEventActivity, "Event Created Successfully")
     }
 
     override fun onToggleClicked(s: String, action: Boolean, position: Int) {
         selectedDeviceListByAreaId[position].action = action
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onDeviceRemoved(position: Int) {
         deviceListByAreaId.single { it.deviceName == selectedDeviceListByAreaId[position].deviceName }.isSelected=false
         selectedDeviceListByAreaId.removeAt(position)

@@ -1,9 +1,10 @@
 package com.example.demovz.ui.event.adapter.addDevice
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.setPadding
+import android.widget.SeekBar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.databinding.DeviceDetailItemLayoutBinding
 import com.example.demovz.databinding.DeviceItemLayoutBinding
@@ -11,7 +12,8 @@ import com.example.demovz.db.entity.Device
 
 class DevicesListAdapter(
     private var devicesList: ArrayList<Device>,
-    private var isEventDetail: Boolean
+    private var isEventDetail: Boolean,
+    private val isDeviceScreen: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -38,6 +40,7 @@ class DevicesListAdapter(
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (isEventDetail) {
             with(holder as DeviceDetailViewHolder) {
@@ -45,7 +48,26 @@ class DevicesListAdapter(
                     val data = devicesList[position]
                     val action = if(data.action) "ON" else "OFF"
                     txtDeviceName.text =
-                        "${data.deviceName} : $action"
+                         if(action == "OFF") " ${data.deviceName} : OFF" else data.deviceName
+
+                    seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+                        override fun onProgressChanged(
+                            seekBar: SeekBar?,
+                            progress: Int,
+                            fromUser: Boolean
+                        ) {
+                            seekBarValue.text = "$progress%"
+                        }
+
+                        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                            //"Not yet implemented"
+                        }
+
+                        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                            //"Not yet implemented"
+                        }
+
+                    })
 
                     if(action=="ON")
                     {
@@ -74,6 +96,11 @@ class DevicesListAdapter(
 
                         txtDeviceName.text = this.deviceName
                         toggleBtn.isChecked = this.action
+                        if (isDeviceScreen){
+                            cancelImg.visibility = View.GONE
+                        } else{
+                            cancelImg.visibility = View.VISIBLE
+                        }
 
                         if (isEventDetail) {
                             cancelImg.visibility = View.GONE

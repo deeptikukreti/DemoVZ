@@ -11,7 +11,7 @@ class EventPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activ
         return mFragmentList.size
     }
 
-    public fun getTabTitle(position : Int): String{
+    fun getTabTitle(position : Int): String{
         return mFragmentTitleList[position]
     }
 

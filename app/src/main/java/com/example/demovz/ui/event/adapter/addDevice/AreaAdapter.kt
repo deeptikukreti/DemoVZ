@@ -14,7 +14,8 @@ import com.example.demovz.db.entity.Device
 class AreaAdapter(
     private var areaList: ArrayList<AreaWithDeviceData>,
     private val isEventDetail: Boolean,
-    val context:Context
+    val context:Context,
+    private val isDeviceScreen: Boolean
 ) : RecyclerView.Adapter<AreaAdapter.ViewHolder>() {
 
 
@@ -75,7 +76,7 @@ class AreaAdapter(
     }
 
     private fun deviceListAdapter(rvDevices:RecyclerView,adapterPosition:Int,deviceList:ArrayList<Device>){
-        val deviceAdapter = DevicesListAdapter(deviceList, isEventDetail)
+        val deviceAdapter = DevicesListAdapter(deviceList, isEventDetail, isDeviceScreen)
         deviceAdapter.setOnClickListener(object :
             DevicesListAdapter.OnItemClickListener {
 

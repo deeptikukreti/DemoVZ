@@ -30,21 +30,6 @@ class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
         _binding = FragmentDeviceBinding.inflate(inflater, container, false)
         val root: View = binding.root
         getDeviceData()
-//        activity?.let {
-//            DevicesRoomDb.getInstance(it!!.applicationContext).areaDeviceDao().getAllAreaWithDevices()
-//                .also { areaDeviceList.addAll(it) }
-//        }
-//        areaDeviceList.forEach { area ->
-//            val deviceList = ArrayListConverter().toStringArrayList(area.deviceList)
-//            selectedDeviceList.add(
-//                AreaWithDeviceData(
-//                    area.areaId,
-//                    area.areaName,
-//                    deviceList,
-//                    false
-//                )
-//            )
-//        }
 
         return root
     }
@@ -74,7 +59,7 @@ class DeviceFragment : Fragment(), AreaAdapter.OnItemClickListener {
             backIcon.visibility=View.GONE
             txtTitle.text="Devices"
         }
-        areaAdapter = AreaAdapter(selectedDeviceList,false, requireActivity()).apply { this.setOnClickListener(this@DeviceFragment) }
+        areaAdapter = AreaAdapter(selectedDeviceList,false, requireActivity(), true).apply { this.setOnClickListener(this@DeviceFragment) }
         binding.rvGrp.adapter = areaAdapter
     }
 

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.example.demovz.R
 import com.example.demovz.ui.event.activity.CreateEventActivity
 import com.example.demovz.ui.event.adapter.eventsListAdapter.GroupListAdapter
@@ -21,7 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
 
-//    private lateinit var viewModel: GroupViewModel
     private var _binding: FragmentGroupBinding? = null
     private val viewModel: EventViewModel by  viewModels()
     private val binding get() = _binding!!
@@ -32,7 +30,6 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        viewModel = ViewModelProvider(this)[GroupViewModel::class.java]
         _binding = FragmentGroupBinding.inflate(inflater, container, false)
         val root: View = binding.root
         binding.appBar.txtTitle.text = getString(R.string.home)
@@ -57,22 +54,14 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
     override fun onResume() {
         super.onResume()
         getGroupDataList()
-       // CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
     }
 
     private fun getGroupDataList() {
-        viewModel.getAllEvents().observe(this, Observer {
+        viewModel.getAllEvents().observe(this) {
             it?.let {
                 grpAdapter.submitList(it)
             }
-        })
-//        lifecycleScope.launch {
-//            RoomDb.getInstance(requireContext()).eventDao().getAllEvents().collect { eventsList ->
-//                if (eventsList.isNotEmpty()) {
-//                    grpAdapter.submitList(eventsList)
-//                }
-//            }
-//        }
+        }
     }
 
     override fun onClicked(event: Event) {
@@ -83,4 +72,5 @@ class GroupFragment : Fragment(), GroupListAdapter.OnItemClickListener {
         super.onDestroyView()
         _binding = null
     }
+
 }

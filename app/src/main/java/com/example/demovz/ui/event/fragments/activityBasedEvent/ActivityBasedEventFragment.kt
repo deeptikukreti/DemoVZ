@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ActivityBasedEventFragment : Fragment(), GroupListAdapter.OnItemClickListener {
-    private val eventViewModel: EventViewModel by  activityViewModels()
+    private val eventViewModel: EventViewModel by activityViewModels()
     private var _binding: FragmentActivityBasedEventBinding? = null
     private val binding get() = _binding!!
     private var groupList = ArrayList<Event>()
@@ -30,32 +30,35 @@ class ActivityBasedEventFragment : Fragment(), GroupListAdapter.OnItemClickListe
         _binding = FragmentActivityBasedEventBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        grpAdapter = GroupListAdapter(groupList).apply { setOnClickListener(this@ActivityBasedEventFragment
-        ) }
+        grpAdapter = GroupListAdapter(groupList).apply {
+            setOnClickListener(
+                this@ActivityBasedEventFragment
+            )
+        }
         binding.rvGrp.adapter = grpAdapter
 
-//        CoroutineScope(Dispatchers.IO).launch { getGroupDataList() }
-getGroupDataList()
+        getGroupDataList()
         return root
     }
 
-    private  fun getGroupDataList() {
+    private fun getGroupDataList() {
         eventViewModel.getEventsByTriggerType(2).observe(requireActivity(), Observer {
-            it?.let {
+            if (it.isEmpty()) {
+                binding.txtEvntName.visibility = View.VISIBLE
+            } else {
+                binding.txtEvntName.visibility = View.GONE
                 grpAdapter.submitList(it)
             }
         })
-//        lifecycleScope.launch {
-//            RoomDb.getInstance(requireContext()).eventDao().getEventByTrigger(2).collect { eventsList ->
-//                if (eventsList.isNotEmpty()) {
-//                    grpAdapter.submitList(eventsList)
-//                }
-//            }
-//        }
     }
 
     override fun onClicked(event: Event) {
         startActivity(Intent(activity, EventDetailActivity::class.java).putExtra("ID", event.id))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getGroupDataList()
     }
 
 }

@@ -15,11 +15,8 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demovz.R
-import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
-import com.example.demovz.ui.event.adapter.addDevice.AddDeviceAdapter
 import com.example.demovz.databinding.ActivityEditEventBinding
 import com.example.demovz.db.entity.AreaWithDeviceData
 import com.example.demovz.db.entity.Device
@@ -37,8 +34,8 @@ import java.util.Calendar
 class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickListener,
     DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     var binding: ActivityEditEventBinding? = null
-    private val eventViewModel : EventViewModel by viewModels()
-    private val deviceViewModel : DeviceViewModel by viewModels()
+    private val eventViewModel: EventViewModel by viewModels()
+    private val deviceViewModel: DeviceViewModel by viewModels()
     private lateinit var devicesListAdapter: DevicesListAdapter
 
     private var hour: Int = 0
@@ -57,20 +54,19 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
     private var isRecurring: Boolean = false
     var sensorDevice = ""
     var eventId: Int? = 0
-    var areaId=-1
-    var currentAreaId=-1
-    var areaName=""
+    var areaId = -1
+    var currentAreaId = -1
+    var areaName = ""
 
     private var selectDeviceList = ArrayList<AreaWithDeviceData>()
     private var deviceListByAreaId = ArrayList<Device>()
     private var areaList = ArrayList<String>()
     private var selectedDeviceListByAreaId = ArrayList<Device>()
-
     val list = arrayListOf(
-        "Please Select Sensor Device: ",
+        "Please Select Sensor / Device: ",
         "Main Door Sensor",
         "Bedroom Door Sensor",
-        "Kitchen Door sensor",
+        "Kitchen Stove",
         "Stairs Sensor"
     )
 
@@ -103,6 +99,7 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
             }
         }
     }
+
     private fun setSpinner() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
 
@@ -128,6 +125,7 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
         }
         binding?.spinner?.adapter = adapter
     }
+
     private fun setAreaSpinner() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, areaList)
         binding?.areaSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -136,35 +134,42 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
                 // You can define your actions as you want
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                p1: View?,
+                position: Int,
+                p3: Long
+            ) {
                 if (position == 0) {
-                    areaId=-1
-                    areaName=""
-                    binding?.grpAddDevice?.visibility=View.GONE
+                    areaId = -1
+                    areaName = ""
+                    binding?.grpAddDevice?.visibility = View.GONE
                     (parent?.getChildAt(position) as TextView).setTextColor(getColor(R.color.colorGrey))
                 } else {
-                    areaName=selectDeviceList[position-1].areaName
-                    areaId=selectDeviceList[position-1].areaId
-                    if(currentAreaId!=areaId) {
+                    areaName = selectDeviceList[position - 1].areaName
+                    areaId = selectDeviceList[position - 1].areaId
+                    if (currentAreaId != areaId) {
                         selectedDeviceListByAreaId.clear()
                         devicesListAdapter.notifyDataSetChanged()
                     }
-                    binding?.grpAddDevice?.visibility=View.VISIBLE
+                    binding?.grpAddDevice?.visibility = View.VISIBLE
                 }
             }
         }
         binding?.areaSpinner?.adapter = adapter
 
     }
+
     private fun setData() {
-        eventViewModel.getEventById(eventId!!).observe(this, Observer {data->
+        eventViewModel.getEventById(eventId!!).observe(this) { data ->
             data?.let {
                 binding?.apply {
                     eventName = data.eventName
                     triggerType = data.triggerType
-                    areaId=data.areaId
-                    currentAreaId=data.areaId
-                    areaName=data.areaName
+                    areaId = data.areaId
+                    currentAreaId = data.areaId
+                    areaName = data.areaName
                     val bothDate = data.dateTime.split("to")
                     if (bothDate.isNotEmpty()) {
                         dateTime = bothDate[0]
@@ -187,7 +192,7 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
                         grpSelectEventType.visibility = View.VISIBLE
                         spinner.setSelection(list.indexOf(sensorDevice))
                     }
-                    grpSelectArea.visibility=View.VISIBLE
+                    grpSelectArea.visibility = View.VISIBLE
                     areaSpinner.setSelection(areaList.indexOf(areaName))
                     btnSaveEvent.visibility = View.VISIBLE
 
@@ -200,13 +205,14 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
                     devicesListAdapter =
                         DevicesListAdapter(
                             selectedDeviceListByAreaId,
-                            false
+                            false, false
                         ).apply { setOnClickListener(this@EditEventActivity) }
-                   rvGrp.adapter = devicesListAdapter
+                    rvGrp.adapter = devicesListAdapter
                 }
             }
-        })
+        }
     }
+
     private fun viewInitialization() {
         binding?.appBar?.apply {
             ivLogo.visibility = View.GONE
@@ -223,7 +229,7 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
             rgTriggerType.setOnCheckedChangeListener { _, i ->
                 when (i) {
                     R.id.rb_time_based -> {
-                        sensorDevice=""
+                        sensorDevice = ""
                         triggerType = 1
                         binding?.spinner?.setSelection(0)
                         grpSelectDateTime.visibility = View.VISIBLE
@@ -325,6 +331,7 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
         }
 
     }
+
     private fun saveEventDetails() {
         val eventObj = Event(
             id = eventId,
@@ -333,24 +340,27 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
             dateTime = "$dateTime to $endDateTime",
             isRecurring = isRecurring,
             sensorDevice = sensorDevice,
-            areaId=areaId,
-            areaName =areaName ,
+            areaId = areaId,
+            areaName = areaName,
             deviceList = ArrayListConverter().fromStringArrayList(deviceListByAreaId),
             selectDeviceList = ArrayListConverter().fromStringArrayList(selectedDeviceListByAreaId)
         )
         eventViewModel.updateEvent(eventObj)
-//        RoomDb.getInstance(applicationContext).eventDao().update(eventObj)
-        onBackPressed()
-        finish()
+        CommonUtils.successDialog(this@EditEventActivity, "Event Edited Successfully")
     }
+
     override fun onToggleClicked(s: String, action: Boolean, position: Int) {
         selectedDeviceListByAreaId[position].action = action
     }
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onDeviceRemoved(position: Int) {
-        deviceListByAreaId.single { it.deviceName == selectedDeviceListByAreaId[position].deviceName }.isSelected=false
+        deviceListByAreaId.single { it.deviceName == selectedDeviceListByAreaId[position].deviceName }.isSelected =
+            false
         selectedDeviceListByAreaId.removeAt(position)
         devicesListAdapter.notifyDataSetChanged()
     }
+
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         myDay = dayOfMonth
         myYear = year
@@ -362,6 +372,7 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
             TimePickerDialog(this@EditEventActivity, this@EditEventActivity, hour, minute, true)
         timePickerDialog.show()
     }
+
     @SuppressLint("SetTextI18n")
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         myHour = hourOfDay
@@ -389,37 +400,37 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
         val save = view.findViewById<Button>(R.id.btn_save)
         val cancel = view.findViewById<Button>(R.id.btn_cancel)
         builder.setView(view)
-        if(currentAreaId!=areaId) {
+        if (currentAreaId != areaId) {
             deviceListByAreaId.clear()
             for (i in selectDeviceList) {
                 if (i.areaId == areaId) {
-                    currentAreaId=areaId
+                    currentAreaId = areaId
                     deviceListByAreaId.addAll(i.deviceList)
                     break
                 }
             }
-        }else{
-            if(selectedDeviceListByAreaId.size>0) {
+        } else {
+            if (selectedDeviceListByAreaId.size > 0) {
                 selectedDeviceListByAreaId.forEach { it1 ->
                     deviceListByAreaId.single { it.deviceName == it1.deviceName }.isSelected = true
                 }
-            }else{
-                deviceListByAreaId.forEach { it.isSelected=false }
+            } else {
+                deviceListByAreaId.forEach { it.isSelected = false }
             }
         }
-        val addDeviceAdapter= SelectDevicesListAdapter()
-        addDeviceAdapter.setOnClickListener(object : SelectDevicesListAdapter.OnItemClickListener{
+        val addDeviceAdapter = SelectDevicesListAdapter()
+        addDeviceAdapter.setOnClickListener(object : SelectDevicesListAdapter.OnItemClickListener {
             override fun onClicked(i: Device, isChecked: Boolean, position: Int) {
-                deviceListByAreaId[position].isSelected=isChecked
+                deviceListByAreaId[position].isSelected = isChecked
             }
         })
         addDeviceAdapter.addList(deviceListByAreaId)
         rvSelectDevice.adapter = addDeviceAdapter
         save.setOnClickListener {
             var isDeviceSelected = false
-            for(item in deviceListByAreaId){
-                if(item.isSelected)
-                { isDeviceSelected=true
+            for (item in deviceListByAreaId) {
+                if (item.isSelected) {
+                    isDeviceSelected = true
                     break
                 }
             }
@@ -427,7 +438,7 @@ class EditEventActivity : AppCompatActivity(), DevicesListAdapter.OnItemClickLis
             if (isDeviceSelected) {
                 selectedDeviceListByAreaId.clear()
                 deviceListByAreaId.forEach {
-                    if(it.isSelected)
+                    if (it.isSelected)
                         selectedDeviceListByAreaId.add(it)
                 }
                 devicesListAdapter.notifyDataSetChanged()

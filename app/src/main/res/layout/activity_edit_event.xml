@@ -32,26 +32,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:context=".ui.event.activity.CreateEventActivity">
+
             <TextView
                 android:id="@+id/txt_evnt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Event/Scene Name"
+                android:text="Event Name:"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <EditText
                 android:id="@+id/edt_event_name"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="5dp"
+                android:autofillHints="no"
                 android:background="@drawable/rectangle"
                 android:hint="Add Action"
+                android:inputType="text"
                 android:paddingHorizontal="10dp"
                 android:singleLine="true"
                 android:textSize="18sp"
@@ -60,13 +64,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_evnt_name" />
 
-
             <TextView
                 android:id="@+id/txt_trigger_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
                 android:text="Choose Trigger Type"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -138,10 +141,10 @@
                     android:text="Select Start Date &amp; Time"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/baseline_calendar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/select_date_time"
-                    app:drawableEndCompat="@drawable/baseline_calendar" />
+                    app:layout_constraintTop_toBottomOf="@id/select_date_time" />
 
                 <TextView
                     android:id="@+id/select_to_date_time"
@@ -167,10 +170,10 @@
                     android:text="Select End Date &amp; Time"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/baseline_calendar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/select_to_date_time"
-                    app:drawableEndCompat="@drawable/baseline_calendar" />
+                    app:layout_constraintTop_toBottomOf="@id/select_to_date_time" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cb_recurring"
@@ -196,7 +199,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
-                    android:text="Select Sensor Device"
+                    android:text="Sensor / Devices"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -306,12 +309,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="20dp"
+                android:backgroundTint="@color/black"
                 android:text="@string/save"
                 android:visibility="gone"
-                android:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_grp" />        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@id/rv_grp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

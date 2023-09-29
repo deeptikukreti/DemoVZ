@@ -5,13 +5,13 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="10dp"
     android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="10dp"
+    android:backgroundTint="@color/colorGrey"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:backgroundTint="@color/colorGrey">
+    app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,11 +22,11 @@
             android:id="@+id/txt_device_name"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginHorizontal="5dp"
             android:gravity="center_vertical"
             android:text="@string/title_devices"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginHorizontal="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/toggle_btn"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,40 +37,17 @@
             android:id="@+id/toggle_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOn="ON"
             android:layout_centerInParent="true"
-            android:textOff="OFF"
+            android:layout_marginVertical="10dp"
+            android:layout_marginEnd="10dp"
             android:showText="false"
+            android:textOff="OFF"
+            android:textOn="ON"
             android:thumb="@drawable/thumb_selector"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/edit_img"
-            app:layout_constraintTop_toTopOf="parent" />
-<!--        <androidx.appcompat.widget.SwitchCompat-->
-<!--            android:id="@+id/toggle_btn"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:checked="false"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textOff="Off"-->
-<!--            android:textOn="On"-->
-<!--            android:textSize="15sp"-->
-<!--            android:thumb="@drawable/thumb_selector"-->
-<!--            app:showText="true"-->
-<!--            app:switchTextAppearance="@style/SwitchTextAppearance"-->
-<!--            app:track="@drawable/track_selector"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/edit_img"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-<!--        <com.google.android.material.switchmaterial.SwitchMaterial-->
-<!--            android:id="@+id/toggle_btn"-->
-<!--            app:showText="false"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/edit_img"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/edit_img"

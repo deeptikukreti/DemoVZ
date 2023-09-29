@@ -8,16 +8,14 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.example.demovz.R
-import com.example.demovz.ui.event.adapter.addDevice.AreaAdapter
 import com.example.demovz.databinding.ActivityEventDetailBinding
-import com.example.demovz.db.entity.AreaWithDeviceData
 import com.example.demovz.db.entity.Device
 import com.example.demovz.db.entity.Event
 import com.example.demovz.ui.event.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.ui.event.viewModel.EventViewModel
 import com.example.demovz.util.ArrayListConverter
+import com.example.demovz.util.CommonUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,37 +59,37 @@ class EventDetailActivity : AppCompatActivity(){
 
     @SuppressLint("SetTextI18n")
     private fun setData() {
-        eventViewModel.getEventById(eventId!!).observe(this, Observer {
-            it?.let{
-                 data=it
+        eventViewModel.getEventById(eventId!!).observe(this) {
+            it?.let {
+                data = it
                 binding?.apply {
                     eventName = data.eventName
                     triggerType = data.triggerType
                     dateTime = data.dateTime
                     isRecurring = data.isRecurring
                     sensorDevice = data.sensorDevice
-                    txtEvntName.text = "Event/Scene Name : " + data.eventName
+                    txtEvntName.text = "Event Name: " + data.eventName
                     if (data.triggerType == 1) {
                         txtTriggerType.text = "Trigger Type : Time Based"
                         grpSelectDateTime.visibility = View.VISIBLE
                         tvDateTime.text = data.dateTime
                         if (data.isRecurring)
-                            txtRecurring.text = "Occurence type : Recurring"
+                            txtRecurring.text = "Occurrence type : Recurring"
                         else
-                            txtRecurring.text = "Occurence type : One Time"
+                            txtRecurring.text = "Occurrence type : One Time"
                     } else {
                         txtTriggerType.text = "Trigger Type : Activity Based"
                         txtSensorDevice.visibility = View.VISIBLE
-                        txtSensorDevice.text = "Sensor Device : ${data.sensorDevice}"
+                        txtSensorDevice.text = "Sensor / Device : ${data.sensorDevice}"
                     }
-                    txtArea.text="Area : ${data.areaName}"
+                    txtArea.text = "Area : ${data.areaName}"
                     selectedDeviceList =
                         ArrayListConverter().toStringArrayList(data.selectDeviceList)
-                    deviceAdapter= DevicesListAdapter(selectedDeviceList,true)
+                    deviceAdapter = DevicesListAdapter(selectedDeviceList, true, false)
                     binding?.rvGrp?.adapter = deviceAdapter
                 }
             }
-        })
+        }
     }
 
     override fun onResume() {
@@ -100,7 +98,6 @@ class EventDetailActivity : AppCompatActivity(){
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.edit_menu, menu)
         return true
     }
@@ -119,8 +116,7 @@ class EventDetailActivity : AppCompatActivity(){
 
             R.id.delete -> {
                 eventViewModel.deleteEvent(data)
-                onBackPressed()
-                finish()
+                eventViewModel.deleteEventConfirmationDialog(this@EventDetailActivity)
                 true
             }
 
