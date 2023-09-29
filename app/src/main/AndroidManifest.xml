@@ -14,12 +14,15 @@
         android:theme="@style/Theme.DemoVZ"
         tools:targetApi="31">
         <activity
+            android:name=".ui.review_settings.ReviewSettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.event.activity.EventListActivity"
             android:exported="false" />
         <activity
             android:name=".ui.event.activity.EventDetailActivity"
             android:exported="false"
-            android:label=""/>
+            android:label="" />
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
@@ -30,6 +33,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.activity.event.EventListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.event.EventDetailActivity"
+            android:exported="false"
+            android:label="" />
+<!--        <activity-->
+<!--            android:name=".ui.activity.SplashActivity"-->
+<!--            android:exported="true"-->
+<!--            android:theme="@style/Theme.DemoVZ">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity
             android:name=".ui.event.activity.EditEventActivity"
             android:exported="false" />

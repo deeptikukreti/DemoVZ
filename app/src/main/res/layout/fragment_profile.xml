@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/welcome_back_xyz"
         android:textSize="25sp"
+        android:id="@+id/name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
