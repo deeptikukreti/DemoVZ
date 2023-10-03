@@ -15,7 +15,6 @@ import com.example.demovz.db.entity.Event
 import com.example.demovz.ui.event.adapter.addDevice.DevicesListAdapter
 import com.example.demovz.ui.event.viewModel.EventViewModel
 import com.example.demovz.util.ArrayListConverter
-import com.example.demovz.util.CommonUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
